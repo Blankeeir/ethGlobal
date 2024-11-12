@@ -1,0 +1,18 @@
+2024-10-13T02:57:08.817898Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/.turbo-cookie"), AnchoredSystemPathBuf(".turbo/cookies/1.cookie")}
+2024-10-13T02:57:08.817909Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:57:11.418402Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/frontend/vite.config.ts.timestamp-1728788231317-09db12d7730e2.mjs")}
+2024-10-13T02:57:11.418416Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-frontend"), path: AnchoredSystemPathBuf("apps/frontend") }}))
+2024-10-13T02:57:12.318154Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/.DS_Store"), AnchoredSystemPathBuf("apps/frontend/.DS_Store"), AnchoredSystemPathBuf(".DS_Store"), AnchoredSystemPathBuf("apps/.DS_Store")}
+2024-10-13T02:57:12.318171Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-frontend"), path: AnchoredSystemPathBuf("apps/frontend") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:57:12.318256Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-10-13T02:57:17.318517Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/.DS_Store"), AnchoredSystemPathBuf("apps/frontend/.DS_Store"), AnchoredSystemPathBuf(".DS_Store")}
+2024-10-13T02:57:17.318530Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-frontend"), path: AnchoredSystemPathBuf("apps/frontend") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:57:17.318573Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-10-13T02:57:50.418228Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".DS_Store")}
+2024-10-13T02:57:50.418277Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:58:00.619005Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".DS_Store")}
+2024-10-13T02:58:00.619045Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:58:05.617534Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".DS_Store")}
+2024-10-13T02:58:05.617559Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-10-13T02:58:10.917574Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".DS_Store")}
+2024-10-13T02:58:10.917591Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))

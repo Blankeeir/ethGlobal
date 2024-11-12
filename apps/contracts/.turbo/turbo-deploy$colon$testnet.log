@@ -1,0 +1,39 @@
+
+[2K[1G[1myarn run v1.22.22[22m
+[2K[1G[33mwarning[39m package.json: No license field
+[2K[1G[2m$ npx hardhat run scripts --network vechain_testnet[22m
+[1G[0K⠙[1G[0K[31m[31mAn unexpected error occurred:[39m[39m
+
+InvalidHDNodeMnemonic [Error]: Method 'HDNode.fromMnemonic()' failed.
+-Reason: 'Invalid mnemonic words given as input.'
+-Parameters: 
+	undefined
+-Internal error: 
+	Invalid mnemonic
+    at Object.fromMnemonic [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-core/dist/index.js:4762:11[90m)[39m
+    at [90m/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-network/dist/index.js:4174:59
+    at Array.map (<anonymous>)
+    at new ProviderInternalHDWallet [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-network/dist/index.js:4173:32[90m)[39m
+    at createWalletFromHardhatNetworkConfig [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-hardhat-plugin/dist/index.js:41:14[90m)[39m
+    at [90m/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-hardhat-plugin/dist/index.js:93:5
+    at /Users/emma/Desktop/Repo/Servare/node_modules/[4mhardhat[24m/src/internal/core/runtime-environment.ts:116:48
+    at Array.forEach (<anonymous>)
+    at new Environment (/Users/emma/Desktop/Repo/Servare/node_modules/[4mhardhat[24m/src/internal/core/runtime-environment.ts:116:26)
+    at main (/Users/emma/Desktop/Repo/Servare/node_modules/[4mhardhat[24m/src/internal/cli/cli.ts:231:17) {
+  methodName: [32m'HDNode.fromMnemonic()'[39m,
+  errorMessage: [32m'Invalid mnemonic words given as input.'[39m,
+  data: [90mundefined[39m,
+  innerError: Error: Invalid mnemonic
+      at normalize (/Users/emma/Desktop/Repo/Servare/node_modules/[4m@scure[24m/bip39/index.js:31:15)
+      at Object.mnemonicToSeedSync (/Users/emma/Desktop/Repo/Servare/node_modules/[4m@scure[24m/bip39/index.js:141:50)
+      at Object.fromMnemonic [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-core/dist/index.js:4759:15[90m)[39m
+      at [90m/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-network/dist/index.js:4174:59
+      at Array.map (<anonymous>)
+      at new ProviderInternalHDWallet [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-network/dist/index.js:4173:32[90m)[39m
+      at createWalletFromHardhatNetworkConfig [90m(/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-hardhat-plugin/dist/index.js:41:14[90m)[39m
+      at [90m/Users/emma/Desktop/Repo/Servare/apps/contracts/[39mnode_modules/[4m@vechain[24m/sdk-hardhat-plugin/dist/index.js:93:5
+      at /Users/emma/Desktop/Repo/Servare/node_modules/[4mhardhat[24m/src/internal/core/runtime-environment.ts:116:48
+      at Array.forEach (<anonymous>)
+}
+[1G[0K⠙[1G[0K[2K[1G[31merror[39m Command failed with exit code 1.
+[2K[1G[34minfo[39m Visit [1mhttps://yarnpkg.com/en/docs/cli/run[22m for documentation about this command.

@@ -1,0 +1,15 @@
+2024-11-12T08:59:47.194414Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/.turbo-cookie"), AnchoredSystemPathBuf(".turbo/cookies/1.cookie")}
+2024-11-12T08:59:47.194425Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2024-11-12T08:59:48.794339Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/frontend/vite.config.ts.timestamp-1731401988783-c3941e26f8d03.mjs")}
+2024-11-12T08:59:48.794348Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-frontend"), path: AnchoredSystemPathBuf("apps/frontend") }}))
+2024-11-12T08:59:48.894441Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/frontend/vite.config.ts.timestamp-1731401988783-c3941e26f8d03.mjs")}
+2024-11-12T08:59:48.894452Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-frontend"), path: AnchoredSystemPathBuf("apps/frontend") }}))
+2024-11-12T08:59:48.897887Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-11-12T08:59:49.395310Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/backend/src/logs/debug/.1c81a551863cd5a216fb51e0c51372378520810a-audit.json"), AnchoredSystemPathBuf("apps/backend/src/logs/error/.5fc314b748504bdba2219054e226847a9bd7b39b-audit.json")}
+2024-11-12T08:59:49.395320Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-backend"), path: AnchoredSystemPathBuf("apps/backend") }}))
+2024-11-12T08:59:49.794556Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/backend/src/logs/debug/2024-11-12.log"), AnchoredSystemPathBuf("apps/backend/src/logs/error/2024-11-12.log")}
+2024-11-12T08:59:49.794563Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-backend"), path: AnchoredSystemPathBuf("apps/backend") }}))
+2024-11-12T08:59:49.796176Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2024-11-12T09:00:00.995106Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/backend/src/logs/debug/2024-11-12.log")}
+2024-11-12T09:00:00.995118Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("x-dapp-backend"), path: AnchoredSystemPathBuf("apps/backend") }}))
+2024-11-12T09:00:00.995155Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
