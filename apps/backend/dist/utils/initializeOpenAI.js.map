@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/utils/initializeOpenAI.ts"],"sourcesContent":["import { OpenAIHelper } from '@/services/helpers';\n\nexport const initializeOpenAI = () => {\n  return new OpenAIHelper();\n};\n"],"names":["initializeOpenAI","OpenAIHelper"],"rangeMappings":";;;;;;;;;;;;;","mappings":";;;;+BAEaA;;;eAAAA;;;yBAFgB;AAEtB,MAAMA,mBAAmB;IAC9B,OAAO,IAAIC,qBAAY;AACzB"}

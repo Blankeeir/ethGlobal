@@ -1,0 +1,35 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/.a802eaec76748726fc8a51e288b102a3f07849de-audit.json",
+    "files": [
+        {
+            "date": 1730007765277,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-10-27.log",
+            "hash": "1731489cf9894b6f4f75b0e8a313133d772478b5202826258e1d714e731ed8fb"
+        },
+        {
+            "date": 1730376729907,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-10-31.log",
+            "hash": "6d502a788c4dad3891903084f24014b73cf8b6177a8a0cf91974fb9592dcbf67"
+        },
+        {
+            "date": 1730400338907,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-01.log",
+            "hash": "61682f6be7edd2efaa1647304791e6fbf4ce2489a83ee5877654d3ea28c24132"
+        },
+        {
+            "date": 1730882090239,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-06.log",
+            "hash": "10d41b33f94549a601e9948c98702efab864a6b08b40629941a4102c12046672"
+        },
+        {
+            "date": 1731038823875,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-08.log",
+            "hash": "55885e9edc0c819082fdeca922b7f686496da6cda69d66c92b4455caf05b1c71"
+        }
+    ],
+    "hashType": "sha256"
+}

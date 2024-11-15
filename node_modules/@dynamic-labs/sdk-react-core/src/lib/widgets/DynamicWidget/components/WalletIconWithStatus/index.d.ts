@@ -1,0 +1,1 @@
+export { WalletIconWithStatus } from './WalletIconWithStatus';

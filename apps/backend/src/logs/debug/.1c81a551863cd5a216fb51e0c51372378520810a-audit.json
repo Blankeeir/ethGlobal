@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/backend/src/logs/debug/.1c81a551863cd5a216fb51e0c51372378520810a-audit.json",
+    "files": [
+        {
+            "date": 1731401989356,
+            "name": "/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/backend/src/logs/debug/2024-11-12.log",
+            "hash": "f5492a11c87c3d6f8c044cbdcc97dac0b7ca0facce2cb8471f17141922516723"
+        }
+    ],
+    "hashType": "sha256"
+}

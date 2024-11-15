@@ -1,0 +1,38 @@
+
+[2K[1G[1myarn run v1.22.22[22m
+[2K[1G[33mwarning[39m ../../package.json: "dependencies" has dependency "typescript" with range "^5.6.3" that collides with a dependency in "devDependencies" of the same name with version "^5.0.0"
+[2K[1G[2m$ tsc && vite build[22m
+[96msrc/components/Auth/DynamicAuthProvider.tsx[0m:[93m6[0m:[93m7[0m - [91merror[0m[90m TS6133: [0m'evmNetworks' is declared but its value is never read.
+
+[7m6[0m const evmNetworks = [{
+[7m [0m [91m      ~~~~~~~~~~~[0m
+
+[96msrc/components/Profile/TransactionHistory.tsx[0m:[93m19[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'AnimatedContainer' is declared but its value is never read.
+
+[7m19[0m import { AnimatedContainer } from '../Animations/AnimatedContainer';
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/Profile/TransactionHistory.tsx[0m:[93m37[0m:[93m9[0m - [91merror[0m[90m TS6133: [0m'bgColor' is declared but its value is never read.
+
+[7m37[0m   const bgColor = useColorModeValue('white', 'gray.700');
+[7m  [0m [91m        ~~~~~~~[0m
+
+[96msrc/components/Profile/TransactionHistory.tsx[0m:[93m63[0m:[93m34[0m - [91merror[0m[90m TS6133: [0m'index' is declared but its value is never read.
+
+[7m63[0m           {transactions.map((tx, index) => (
+[7m  [0m [91m                                 ~~~~~[0m
+
+[96msrc/services/ProductService.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2614: [0mModule '"web3-eth-contract"' has no exported member 'ContractInterface'. Did you mean to use 'import ContractInterface from "web3-eth-contract"' instead?
+
+[7m3[0m import { ContractInterface } from 'web3-eth-contract';
+[7m [0m [91m         ~~~~~~~~~~~~~~~~~[0m
+
+
+Found 5 errors in 3 files.
+
+Errors  Files
+     1  src/components/Auth/DynamicAuthProvider.tsx[90m:6[0m
+     3  src/components/Profile/TransactionHistory.tsx[90m:19[0m
+     1  src/services/ProductService.ts[90m:3[0m
+[2K[1G[31merror[39m Command failed with exit code 2.
+[2K[1G[34minfo[39m Visit [1mhttps://yarnpkg.com/en/docs/cli/run[22m for documentation about this command.
