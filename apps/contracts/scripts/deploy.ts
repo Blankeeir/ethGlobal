@@ -16,7 +16,7 @@ async function main() {
   const initialBalance = await deployer.getBalance();
   console.log("Account balance:", ethers.utils.formatEther(initialBalance));
 
-  // Helper function for verification
+  // Helper function for verification 
   async function verify(contract: Contract, args: any[]) {
     if (network.name !== "hardhat" && network.name !== "localhost") {
       console.log("Verifying contract...");
@@ -35,14 +35,33 @@ async function main() {
     // 1. Deploy MentalHealthIdentity
     console.log("\nDeploying MentalHealthIdentity...");
     const MentalHealthIdentity = await ethers.getContractFactory("MentalHealthIdentity");
-    const identityArgs = [
-      process.env.WORLD_ID_ADDRESS,
-      process.env.WORLD_ID_APP_ID,
-      process.env.WORLD_ID_ACTION_ID,
-      process.env.WORLD_ID_GROUP_ID,
-      process.env.ENS_REGISTRY_ADDRESS,
-      process.env.ENS_RESOLVER_ADDRESS,
-      process.env.HYPERLANE_MAILBOX_ADDRESS
+    const requiredEnvVars = [
+      "WORLD_ID_ADDRESS",
+      "WORLD_ID_APP_ID",
+      "WORLD_ID_ACTION_ID",
+      "WORLD_ID_GROUP_ID",
+      "ENS_REGISTRY_ADDRESS",
+      "ENS_RESOLVER_ADDRESS",
+      "HYPERLANE_MAILBOX_ADDRESS",
+      "LAYER_ZERO_ENDPOINT",
+      "HYPERLANE_IGP_ADDRESS",
+      "FILECOIN_STORAGE_ADDRESS"
+    ];
+
+    for (const varName of requiredEnvVars) {
+      if (!process.env[varName]) {
+        throw new Error(`Environment variable ${varName} is not defined`);
+      }
+    }
+
+    const identityArgs: [string, string, string, string, string, string, string] = [
+      process.env.WORLD_ID_ADDRESS!,
+      process.env.WORLD_ID_APP_ID!,
+      process.env.WORLD_ID_ACTION_ID!,
+      process.env.WORLD_ID_GROUP_ID!,
+      process.env.ENS_REGISTRY_ADDRESS!,
+      process.env.ENS_RESOLVER_ADDRESS!,
+      process.env.HYPERLANE_MAILBOX_ADDRESS!
     ];
     const identity = await MentalHealthIdentity.deploy(...identityArgs);
     await identity.deployed();
@@ -52,7 +71,7 @@ async function main() {
     // 2. Deploy BuddyVerification
     console.log("\nDeploying BuddyVerification...");
     const BuddyVerification = await ethers.getContractFactory("BuddyVerification");
-    const buddyArgs = [process.env.ENS_RESOLVER_ADDRESS];
+    const buddyArgs: [string] = [process.env.ENS_RESOLVER_ADDRESS!];
     const buddy = await BuddyVerification.deploy(...buddyArgs);
     await buddy.deployed();
     console.log("BuddyVerification deployed to:", buddy.address);
@@ -61,7 +80,7 @@ async function main() {
     // 3. Deploy MentalHealthEvents
     console.log("\nDeploying MentalHealthEvents...");
     const MentalHealthEvents = await ethers.getContractFactory("MentalHealthEvents");
-    const eventsArgs = [identity.address];
+    const eventsArgs: [string] = [identity.address];
     const events = await MentalHealthEvents.deploy(...eventsArgs);
     await events.deployed();
     console.log("MentalHealthEvents deployed to:", events.address);
@@ -70,11 +89,11 @@ async function main() {
     // 4. Deploy CrossChainChat
     console.log("\nDeploying CrossChainChat...");
     const CrossChainChat = await ethers.getContractFactory("CrossChainChat");
-    const chatArgs = [
-      process.env.LAYER_ZERO_ENDPOINT,
-      process.env.HYPERLANE_MAILBOX_ADDRESS,
-      process.env.HYPERLANE_IGP_ADDRESS,
-      process.env.FILECOIN_STORAGE_ADDRESS
+    const chatArgs: [string, string, string, string] = [
+      process.env.LAYER_ZERO_ENDPOINT!,
+      process.env.HYPERLANE_MAILBOX_ADDRESS!,
+      process.env.HYPERLANE_IGP_ADDRESS!,
+      process.env.FILECOIN_STORAGE_ADDRESS!
     ];
     const chat = await CrossChainChat.deploy(...chatArgs);
     await chat.deployed();

@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/user.service';
 import { ENSService } from '../services/ens.service';
-import { FilecoinService } from '../services/FilecoinService';
+import { FilecoinService } from '../services/filecoin.service';
 import { catchAsync } from '../utils/catchAsync';
 import { ApiError } from '../utils/ApiError';
 

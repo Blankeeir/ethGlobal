@@ -1,6 +1,6 @@
 // services/DataService.ts
-import { FilecoinService } from './FilecoinService';
-import { PushService } from './PushService';
+import { FilecoinService } from './filecoin.service';
+import { PushService } from './push.service';
 
 interface PostData {
   id: string;

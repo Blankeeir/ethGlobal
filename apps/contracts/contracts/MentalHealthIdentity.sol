@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
@@ -14,13 +14,13 @@ library ByteHasher {
     }
 }
 
-contract MentalHealthIdentity is Ownable(msg.sender), Pausable {
+contract MentalHealthIdentity is Ownable, Pausable {
     using ByteHasher for bytes;
 
     // State variables for WorldID
     IWorldID public immutable worldId;
-    string public immutable appId;
-    string public immutable actionId;
+    bytes32 public immutable appId;
+    bytes32 public immutable actionId;
     uint256 public immutable groupId;
 
     // ENS state variables
@@ -90,8 +90,8 @@ contract MentalHealthIdentity is Ownable(msg.sender), Pausable {
             _mailbox == address(0)) revert InvalidAddress();
 
         worldId = _worldId;
-        appId = _appId;
-        actionId = _actionId;
+        appId = keccak256(abi.encodePacked(_appId));
+        actionId = keccak256(abi.encodePacked(_actionId));
         groupId = _groupId;
         ens = ENS(_ens);
         ensResolver = PublicResolver(_ensResolver);
@@ -227,7 +227,6 @@ contract MentalHealthIdentity is Ownable(msg.sender), Pausable {
             groupId,
             abi.encodePacked(signal).hashToField(),
             nullifierHash,
-            abi.encodePacked(appId, actionId).hashToField(),
             proof
         );
 
@@ -323,19 +322,5 @@ contract MentalHealthIdentity is Ownable(msg.sender), Pausable {
     // View functions
     function isVerified(address user) external view returns (bool) {
         return verifiedUsers[user] && !isBanned[user];
-    }
-
-    function getUserMetadata(address user) external view returns (
-        string memory ensName,
-        string memory metadata,
-        bool verified,
-        bool banned
-    ) {
-        return (
-            userENS[user],
-            userMetadata[user],
-            verifiedUsers[user],
-            isBanned[user]
-        );
     }
 }

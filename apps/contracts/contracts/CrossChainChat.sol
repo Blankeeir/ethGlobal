@@ -33,7 +33,7 @@ contract CrossChainChat is NonblockingLzApp, ReentrancyGuard {
         address _mailbox,
         address _igp,
         address _filecoinStorage
-    ) Ownable(msg.sender) NonblockingLzApp(_endpoint) ReentrancyGuard() {
+    ) Ownable() NonblockingLzApp(_endpoint) ReentrancyGuard() {
         require(_endpoint != address(0), "Invalid endpoint address");
         require(_mailbox != address(0), "Invalid mailbox address");
         require(_igp != address(0), "Invalid IGP address");

@@ -1,6 +1,6 @@
 // contracts/interfaces/IServareNFT.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.12;
 // Add ENS interface
 // interfaces/IENS.sol
 interface IENS {

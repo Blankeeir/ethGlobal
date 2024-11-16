@@ -42,7 +42,7 @@ contract MentalHealthMessaging is NonblockingLzApp, ReentrancyGuard {
         address _endpoint,
         address _buddyVerification,
         address _filecoinStorage
-    ) NonblockingLzApp(_endpoint) ReentrancyGuard() Ownable(msg.sender) {
+    ) NonblockingLzApp(_endpoint) ReentrancyGuard() Ownable() {
         require(_endpoint != address(0), "Invalid endpoint address");
         require(_buddyVerification != address(0), "Invalid buddy verification address");
         require(_filecoinStorage != address(0), "Invalid Filecoin storage address");

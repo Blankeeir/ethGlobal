@@ -1,10 +1,8 @@
 export * from "./ConnectWalletButton";
 export * from "./Navbar";
-export * from "./Icon";
 export * from "./InfoCard";
 export * from "./Instructions";
 export * from "./Dropzone";
 export * from "./Footer";
-export * from "./ProductCard";
-// export * from "./SubmissionModal";
-// export * from "./FilterDrawer";
+export * from "./modals/SubmissionModal";
+export * from "./FilterDrawer";

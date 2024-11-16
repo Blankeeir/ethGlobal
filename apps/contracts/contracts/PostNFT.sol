@@ -18,7 +18,7 @@ import "./models/Comment.sol";
 import "./interfaces/IBuddyVerification.sol";
 
 
-contract PostNFT is ERC721URIStorage, Ownable(msg.sender), ReentrancyGuard {
+contract PostNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
     using Strings for uint256;
     
     uint256 private _currentTokenId;
@@ -83,7 +83,7 @@ contract PostNFT is ERC721URIStorage, Ownable(msg.sender), ReentrancyGuard {
     }
 
     // Internal function to check token existence
-    function _exists(uint256 tokenId) internal view virtual returns (bool) {
+    function _exists(uint256 tokenId) internal view virtual override returns (bool) {
         return _ownerOf(tokenId) != address(0);
     }
 

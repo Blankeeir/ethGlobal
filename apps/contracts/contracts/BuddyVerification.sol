@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./interfaces/IENS.sol";
 import "./models/Buddy.sol";
 
-contract BuddyVerification is Ownable(msg.sender) {
+contract BuddyVerification is Ownable {
     using ECDSA for bytes32;
 
     mapping(address => Buddy) public buddies;

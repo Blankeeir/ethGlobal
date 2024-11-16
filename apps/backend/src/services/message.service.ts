@@ -1,5 +1,5 @@
 // src/services/MessageService.ts
-import { FilecoinService} from "./FilecoinService";
+import { FilecoinService} from "./filecoin.service";
 
 
 export class MessageService {

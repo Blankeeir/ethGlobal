@@ -11,7 +11,7 @@ import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/autom
 import "./MentalHealthIdentity.sol";
 import "./models/Event.sol";
 
-contract MentalHealthEvents is AutomationCompatibleInterface, Ownable(msg.sender), ReentrancyGuard {
+contract MentalHealthEvents is AutomationCompatibleInterface, Ownable, ReentrancyGuard {
 
     
     mapping(uint256 => Event) public events;
@@ -99,24 +99,24 @@ contract MentalHealthEvents is AutomationCompatibleInterface, Ownable(msg.sender
         emit EventUpdated(eventId, name, description);
     }
     
-    function checkUpkeep(
-        bytes calldata
-    ) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        for (uint256 i = 0; i < eventCount; i++) {
-            if (events[i].isActive && block.timestamp >= events[i].endTime) {
-                return (true, abi.encode(i));
-            }
-        }
-        return (false, "");
-    }
+    // function checkUpkeep(
+    //     bytes calldata
+    // ) external view override returns (bool upkeepNeeded, bytes memory performData) {
+    //     for (uint256 i = 0; i < eventCount; i++) {
+    //         if (events[i].isActive && block.timestamp >= events[i].endTime) {
+    //             return (true, abi.encode(i));
+    //         }
+    //     }
+    //     return (false, "");
+    // }
     
-    function performUpkeep(bytes calldata performData) external override {
-        uint256 eventId = abi.decode(performData, (uint256));
-        if (events[eventId].isActive && block.timestamp >= events[eventId].endTime) {
-            events[eventId].isActive = false;
-            emit EventEnded(eventId);
-        }
-    }
+    // function performUpkeep(bytes calldata performData) external override {
+    //     uint256 eventId = abi.decode(performData, (uint256));
+    //     if (events[eventId].isActive && block.timestamp >= events[eventId].endTime) {
+    //         events[eventId].isActive = false;
+    //         emit EventEnded(eventId);
+    //     }
+    // }
 
     function getUserEvents(
         address user
@@ -148,5 +148,38 @@ contract MentalHealthEvents is AutomationCompatibleInterface, Ownable(msg.sender
         address user
     ) external view returns (bool) {
         return events[eventId].participants[user];
+    }
+
+    function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory performData) {
+        upkeepNeeded = false;
+        uint256[] memory expiredEventIds = new uint256[](eventCount);
+        uint256 count = 0;
+
+        for (uint256 i = 0; i < eventCount; i++) {
+            if (events[i].isActive && block.timestamp >= events[i].endTime) {
+                upkeepNeeded = true;
+                expiredEventIds[count] = i;
+                count++;
+            }
+        }
+
+        if (upkeepNeeded) {
+            // Trim the array to the actual count
+            bytes memory idsToEnd = abi.encode(expiredEventIds, count);
+            return (true, idsToEnd);
+        }
+        return (false, "");
+    }
+
+    function performUpkeep(bytes calldata performData) external override {
+        (uint256[] memory expiredEventIds, uint256 count) = abi.decode(performData, (uint256[], uint256));
+
+        for (uint256 i = 0; i < count; i++) {
+            uint256 eventId = expiredEventIds[i];
+            if (events[eventId].isActive && block.timestamp >= events[eventId].endTime) {
+                events[eventId].isActive = false;
+                emit EventEnded(eventId);
+            }
+        }
     }
 }

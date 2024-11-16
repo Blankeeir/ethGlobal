@@ -1,8 +1,8 @@
 // services/AuthService.ts
 import { DynamicAuth } from '@dynamic-labs/sdk-react';
 import { ethers } from 'ethers';
-import { PushService } from './PushService';
-import { ENSService } from './ENSService';
+import { PushService } from './push.service';
+import { ENSService } from './ens.service';
 
 interface UserProfile {
   address: string;
@@ -19,7 +19,6 @@ interface UserProfile {
 export class AuthService {
   private pushService: PushService;
   private ensService: ENSService;
-  
   constructor(pushService: PushService, ensService: ENSService) {
     this.pushService = pushService;
     this.ensService = ensService;
