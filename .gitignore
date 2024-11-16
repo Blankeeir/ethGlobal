@@ -1,2 +1,6 @@
 node_modules
-
+./.yarn
+.pnp.*
+*.env
+.DS_Store
+./.turbo
