@@ -14,22 +14,25 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useENS } from '../../hooks/useEns';
-import { usePushProtocol } from '../../hooks/usePushProtocol';
-import { useWeb3 } from '../../hooks/useWeb3';
+import { usePush } from '../../contexts/PushContext';
+import { useWeb3 } from '../../contexts/Web3Context';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { AnimatedContainer } from '../Animations/AnimatedContainer';
+import { Buddy } from '../../util/types';
 
 export const BuddyList: React.FC = () => {
     const { ref, controls } = useScrollAnimation();
     const [buddies, setBuddies] = useState<Buddy[]>([]);
     const [loading, setLoading] = useState(true);
     const { resolveENSName } = useENS();
-    const { getNotifications } = usePushProtocol();
-    const { contract } = useWeb3();
+    const { getNotifications } = usePush();
+    const { eventContract } = useWeb3();
     const navigate = useNavigate();
   
     const bgColor = useColorModeValue('white', 'gray.800');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const itemBgColor = useColorModeValue('gray.50', 'gray.700');
+    const itemHoverBgColor = useColorModeValue('gray.100', 'gray.600');
     const listVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -148,14 +151,13 @@ export const BuddyList: React.FC = () => {
                     animate="visible"
                     exit="exit"
                     layout
-                    style={{ width: '100%' }}
                   >
                     <HStack
                       p={4}
-                      bg={useColorModeValue('gray.50', 'gray.700')}
+                      bg={itemBgColor}
                       borderRadius="md"
                       cursor="pointer"
-                      _hover={{ bg: useColorModeValue('gray.100', 'gray.600') }}
+                      _hover={{ bg: itemHoverBgColor }}
                       onClick={() => handleChatClick(buddy.address)}
                     >
                       <Avatar name={buddy.ensName || buddy.address} size="md" />

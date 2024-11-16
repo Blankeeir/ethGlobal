@@ -2,19 +2,21 @@
 import React from 'react';
 import { Box, VStack, HStack, Avatar, Text, Button } from '@chakra-ui/react';
 import { useENS } from '../../hooks/useEns';
+import { useEffect } from 'react';
+
 
 interface BuddyProfileProps {
   address: string;
 }
 
 export const BuddyProfile: React.FC<BuddyProfileProps> = ({ address }) => {
-  const { ensName, ensAvatar } = useENS();
+  const { ensName, ensAvatar, lookupAddress } = useENS();
 
   useEffect(() => {
     if (address) {
       lookupAddress(address);
     }
-  }, [address]);
+  }, [address, lookupAddress]);
 
   return (
     <Box p={4} bg="white" shadow="sm" rounded="lg">

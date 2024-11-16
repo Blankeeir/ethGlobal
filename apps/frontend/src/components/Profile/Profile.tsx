@@ -1,5 +1,6 @@
 // components/UserProfile/Profile.tsx
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -16,10 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { useUserData } from '../../hooks/useUserData';
-import { ExplorePosts } from '../ExplorePosts';
-import { BuddyList } from '../BuddyList';
-import { EditProfileModal } from './EditProfileModal';
+import { useFilecoinStorage } from '../../hooks/useFilecoinStorage';
+import { ExplorePosts } from '../Post/ExplorePosts';
+import { BuddyList } from '../buddy/BuddyList';
+import { EditProfileModal } from '../modals/EditProfileModal';
 
 export const Profile = () => {
   const { address } = useParams();
@@ -103,3 +104,28 @@ export const Profile = () => {
     </Box>
   );
 };
+
+function useUserData(address: string) {
+  const [profile, setProfile] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  const { retrieveData } = useFilecoinStorage();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const data = await retrieveData(`profile-${address}`);
+        setProfile(data || { address });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setProfile({ address });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [address, getProfile]);
+
+  return { profile, loading };
+}

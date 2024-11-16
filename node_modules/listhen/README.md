@@ -2,8 +2,8 @@
 
 <!-- automd:badges -->
 
-[![npm version](https://flat.badgen.net/npm/v/listhen)](https://npmjs.com/package/listhen)
-[![npm downloads](https://flat.badgen.net/npm/dm/listhen)](https://npmjs.com/package/listhen)
+[![npm version](https://img.shields.io/npm/v/listhen)](https://npmjs.com/package/listhen)
+[![npm downloads](https://img.shields.io/npm/dm/listhen)](https://npmjs.com/package/listhen)
 
 <!-- /automd -->
 
@@ -13,9 +13,9 @@ Elegant HTTP listener!
 
 ## Features
 
-✅ Dev server with HMR, static, WebSockets and typescript support with <a href="https://github.com/unjs/jiti">unjs/jiti</a><br>
+✅ Dev server with HMR, static, WebSockets and TypeScript support with <a href="https://github.com/unjs/jiti">unjs/jiti</a><br>
 
-✅ Works with Node.js, express, and <a href="https://github.com/unjs/h3">unjs/h3</a> out of the box <br>
+✅ Works with Node.js, Express, and <a href="https://github.com/unjs/h3">unjs/h3</a> out of the box <br>
 
 ✅ Show the QR code of the public URL with <a href="https://github.com/unjs/uqr">unjs/uqr</a><br>
 
@@ -43,7 +43,7 @@ Elegant HTTP listener!
 
 ## Quick Usage (CLI)
 
-You can run your applications in localhost with typescript support and watch mode using `listhen` CLI:
+You can run your applications in localhost with TypeScript support and watch mode using `listhen` CLI:
 
 Create `index.ts`:
 
@@ -104,7 +104,7 @@ const handler = (req, res) => {
 }
 
 // listener: { url, getURL, server, close, ... }
-const listener = await listen(handler, options?)
+const listener = await listen(handler, options)
 ```
 
 ## Options

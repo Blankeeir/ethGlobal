@@ -6,5 +6,18 @@ export const REACT_APP_ENS_RESOLVER="0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41"
 
 export const REACT_APP_LZ_ENDPOINT_ETHEREUM="0x66A71Dcef29A0fFBDBE3c6a460a3B5BC225Cd675"
 export const REACT_APP_LZ_ENDPOINT_POLYGON="0x3c2269811836af69497E5F486A85D7316753cf62"
+export const REACT_APP_HYPERLANE_CONFIG="0x3c2269811836af69497E5F486A85D7316753cf62"
+
 export const LZ_ENDPOINTS="0x3c2269811836af69497E5F486A85D7316753cf62"
 export const LZ_CHAIN_IDS=""
+
+export const DYNAMIC_ENV_ID=""
+export const REACT_APP_INFURA_API_KEY=""
+
+export const appName="Buddy"
+export const appDescription="Buddy is a decentralized social network that helps you connect with friends"
+export const appLogo="https://buddy-frontend.s3.amazonaws.com/logo.png"
+export const appBanner="https://buddy-frontend.s3.amazonaws.com/banner.png"
+
+export const REACT_APP_WEB3_STORAGE_TOKEN=""
+export const REACT_APP_PUSH_CHANNEL_ADDRESS=""

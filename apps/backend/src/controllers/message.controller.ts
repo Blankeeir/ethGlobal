@@ -1,6 +1,6 @@
 // src/controllers/message.controller.ts
 import { Request, Response } from 'express';
-import { MessageService } from '../services/MessageService';
+import { MessageService } from '../services/message.service';
 
 export class MessageController {
   constructor(private messageService: MessageService) {}

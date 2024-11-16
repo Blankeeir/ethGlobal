@@ -4,8 +4,8 @@ import { Container, Grid, GridItem, VStack, useBreakpointValue } from '@chakra-u
 import { AnimatedContainer } from './components/Animations/AnimatedContainer';
 import { UserStats } from './components/Profile/UserStats';
 import { BuddyList } from './components/buddy/BuddyList';
-import { ExplorePosts } from './components/ExplorePosts';
-import { EventList } from './components/EventList';
+import { ExplorePosts } from './components/Post/ExplorePosts';
+import { EventList } from './components/event/EventList';
 import { motion } from 'framer-motion';
 
 export const Home: React.FC = () => {
@@ -24,8 +24,7 @@ export const Home: React.FC = () => {
 
   return (
     <Container maxW="container.xl" py={8}>
-      <AnimatedContainer
-        variant="fade"
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -35,7 +34,6 @@ export const Home: React.FC = () => {
           <AnimatedContainer variant="scale" animateOnScroll>
             <UserStats />
           </AnimatedContainer>
-
           {/* Main Content Grid with staggered animations */}
           <Grid
             templateColumns={`repeat(${columns}, 1fr)`}
@@ -80,7 +78,7 @@ export const Home: React.FC = () => {
             </GridItem>
           </Grid>
         </VStack>
-      </AnimatedContainer>
+      </motion.div>
     </Container>
   );
-};
+}

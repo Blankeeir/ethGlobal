@@ -1,7 +1,7 @@
 // apps/frontend/src/hooks/useCoinbaseSDK.ts
 import { useState, useEffect } from 'react';
 import CoinbaseSDK from '@coinbase/wallet-sdk';
-import { useToast } from './useToast';
+import { useToast } from '@chakra-ui/react';
 
 interface CoinbaseConfig {
   appName: string;
@@ -25,8 +25,11 @@ export const useCoinbaseSDK = (config: CoinbaseConfig) => {
         
         setSDK(coinbaseSDK);
       } catch (error: unknown) {
-        toast.error('Failed to initialize Coinbase SDK', {
-          description: (error instanceof Error) ? error.message : 'An unknown error occurred'
+        toast({
+          title: 'Failed to initialize Coinbase SDK',
+          description: (error instanceof Error) ? error.message : 'An unknown error occurred',
+          status: 'error',
+          isClosable: true
         });
       } finally {
         setLoading(false);

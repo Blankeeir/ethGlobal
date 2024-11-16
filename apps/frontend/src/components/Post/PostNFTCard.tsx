@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FiHeart, FiMessageCircle, FiShare2 } from 'react-icons/fi';
-import { useAnimatedMount } from '../../hooks/useAnimatedMount';
+import { useAnimatedCounter } from '../../hooks/useAnimationCounter';
 import { useCoinbaseSDK } from '../../hooks/useCoinbaseSDK';
 
 interface PostNFTCardProps {
@@ -44,7 +44,7 @@ export const PostNFTCard: React.FC<PostNFTCardProps> = ({
   onShare,
   onBuy,
 }) => {
-  const { shouldRender, controls } = useAnimatedMount(true);
+  const { shouldRender, controls } = useAnimatedCounter(0);
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 

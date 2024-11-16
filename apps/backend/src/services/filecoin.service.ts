@@ -66,16 +66,12 @@ export class FilecoinService {
       }
 
       const file = files[0];
-      const content = await file.text();
-      
+      const arrayBuffer = await file.arrayBuffer();
+      const content = new TextDecoder().decode(arrayBuffer);
       return JSON.parse(content) as T;
     } catch (error) {
       console.error('Error retrieving data from Filecoin:', error);
-      throw new Error(
-        error instanceof Error 
-          ? error.message 
-          : 'Failed to retrieve data from Filecoin'
-      );
+      throw new Error(error instanceof Error ? error.message : 'Failed to retrieve data from Filecoin');
     }
   }
 

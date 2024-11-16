@@ -4,7 +4,7 @@ import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useToast } from '@chakra-ui/react';
 
 export const useAuth = () => {
-  const { user, isAuthenticated, showAuthFlow } = useDynamicContext() as { user: { id: string; name: string }, isAuthenticated: boolean, showAuthFlow: () => Promise<void> };
+  const { user, isAuthenticated, showAuthFlow } = useDynamicContext() as unknown as { user: { id: string; name: string }, isAuthenticated: boolean, showAuthFlow: () => Promise<void> };
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 

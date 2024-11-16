@@ -1,9 +1,8 @@
 // apps/frontend/src/hooks/useLayerZero.ts
-import { useState, useCallback } from 'react';
-import { ethers, constants } from 'ethers';
-import { utils } from 'ethers/lib/utils';
-import { useToast } from './useToast';
-import { useWeb3 } from './useWeb3';
+import { useState, useCallback, useMemo} from 'react';
+import { ethers } from 'ethers';
+import { useToast } from '@chakra-ui/react';
+import { useWeb3 } from '../contexts/Web3Context';
 
 interface LayerZeroConfig {
   srcChainId: number;
@@ -20,7 +19,7 @@ interface AdapterParams {
 
 export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
   const [loading, setLoading] = useState(false);
-  const { signer, address } = useWeb3();
+  const { context: { signer }, address } = useWeb3();
   const toast = useToast();
 
   // Default adapter parameters
@@ -28,7 +27,7 @@ export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
     version: 1,
     gasLimit: '200000',
     nativeForDst: '0',
-    dstNativeAddr: constants.AddressZero
+    dstNativeAddr: ethers.constants.AddressZero
   }), []);
 
   const estimateFees = useCallback(async (
@@ -45,7 +44,8 @@ export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
         signer
       );
 
-      const encodedAdapterParams = utils.solidityPack(
+
+      const encodedAdapterParams = ethers.utils.solidityPack(
         ['uint16', 'uint256', 'uint256', 'address'],
         [
           adapterParams.version,
@@ -124,17 +124,24 @@ export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
       );
 
       const receipt = await tx.wait();
-      toast.success('Cross-chain message sent successfully');
+      toast({
+        title: 'Success',
+        description: 'Cross-chain message sent successfully',
+        status: 'success'
+      });
       return receipt;
-    } catch (error: any) {
-      toast.error('Failed to send cross-chain message', {
-        description: error.message
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      toast({
+        title: 'Failed to send cross-chain message',
+        description: errorMessage,
+        status: 'error'
       });
       throw error;
     } finally {
       setLoading(false);
     }
-  }, [signer, config, estimateFees, toast, address]);
+  }, [signer, config, estimateFees, toast, address, defaultAdapterParams]);
 
   return {
     sendMessage,

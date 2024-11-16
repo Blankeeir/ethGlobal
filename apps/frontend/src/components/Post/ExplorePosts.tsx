@@ -21,11 +21,9 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiFilter, FiTrendingUp } from 'react-icons/fi';
 import { PostNFTCard } from './PostNFTCard';
-import { CreatePostModal } from './CreatePostModal';
-import { useWeb3 } from '../../hooks/useWeb3';
-import { useToast } from '../../hooks/useToast';
-import { useFilecoin } from '../../hooks/useFilecoin';
-import { useAnimatedMount } from '../../hooks/useAnimatedMount';
+import { CreatePostModal } from '../modals/CreatePostModal';
+import { useWeb3 } from '../../contexts/Web3Context';
+import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
 
 interface Post {
   id: string;

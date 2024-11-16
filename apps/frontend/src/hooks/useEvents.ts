@@ -1,24 +1,12 @@
 // apps/frontend/src/hooks/useEvents.ts
 import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
-import { useWeb3 } from './useWeb3';
-import { useToast } from './useToast';
+// import { AbiCoder } from 'ethers/lib/utils';
+import { useWeb3 } from '../contexts/Web3Context';
+import { useToast } from '@chakra-ui/react';
 import { useLayerZero } from './useLayerZero';
 import { useFilecoinStorage } from './useFilecoinStorage';
-
-interface Event {
-  id: string;
-  name: string;
-  description: string;
-  startTime: number;
-  endTime: number;
-  creator: string;
-  requiresIdentity: boolean;
-  participants: string[];
-  category: string;
-  chainId: number;
-  filecoinCID?: string;
-}
+import { Event } from '../util/types';
 
 interface EventFilters {
   category?: string;
@@ -27,13 +15,12 @@ interface EventFilters {
 }
 
 export const useEvents = (filters?: EventFilters) => {
-    c
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [userEvents, setUserEvents] = useState<Event[]>([]);
-  const { eventContract, address, chainId } = useWeb3();
+  const { eventContract, address, context: { chainId } } = useWeb3();
   const { sendMessage } = useLayerZero();
-  const { storeData, retrieveData } = useFilecoinStorage();
+  const { storeEventData, retrieveData } = useFilecoinStorage();
   const toast = useToast();
 
   const fetchEvents = useCallback(async () => {
@@ -63,6 +50,7 @@ export const useEvents = (filters?: EventFilters) => {
             participants: event.participants,
             category: event.category,
             chainId: event.chainId.toNumber(),
+            createdAt: Date.now(),
             ...additionalData
           };
         })
@@ -99,14 +87,17 @@ export const useEvents = (filters?: EventFilters) => {
           event.creator === address || event.participants.includes(address)
         ));
       }
-    } catch (error: any) {
-      toast.error('Failed to fetch events', {
-        description: error.message
+    } catch (error: unknown) {
+      toast({
+        title: 'Failed to fetch events',
+        description: error instanceof Error ? error.message : 'Unknown error',
+        status: 'error',
+        isClosable: true
       });
     } finally {
       setLoading(false);
     }
-  }, [eventContract, filters, address, retrieveData]);
+  }, [eventContract, filters, address, retrieveData, toast]);
 
   const createEvent = async (eventData: Omit<Event, 'id' | 'chainId'>) => {
     if (!eventContract || !address) {
@@ -117,10 +108,12 @@ export const useEvents = (filters?: EventFilters) => {
       setLoading(true);
 
       // Store additional data on Filecoin
-      const cid = await storeData({
+      const cid = await storeEventData({
         ...eventData,
-        createdAt: Date.now(),
-        creator: address
+        id: '0', // temporary ID will be replaced after creation
+        isPrivate: false, // default value
+        // createdAt: Date.now(),
+        // creator: address
       });
 
       // Create event on-chain
@@ -135,11 +128,18 @@ export const useEvents = (filters?: EventFilters) => {
       );
 
       await tx.wait();
-      toast.success('Event created successfully');
+      toast({
+        title: 'Event created successfully',
+        status: 'success',
+        isClosable: true
+      });
       await fetchEvents();
-    } catch (error: any) {
-      toast.error('Failed to create event', {
-        description: error.message
+    } catch (error: unknown) {
+      toast({
+        title: 'Failed to create event',
+        description: error instanceof Error ? error.message : 'Unknown error',
+        status: 'error',
+        isClosable: true
       });
       throw error;
     } finally {
@@ -161,8 +161,9 @@ export const useEvents = (filters?: EventFilters) => {
           targetChainId,
           ethers.utils.defaultAbiCoder.encode(
             ['uint256', 'address'],
-            [eventId, address]
-          )
+            [parseInt(eventId), address]
+          ),
+          { adapterParams: { gasLimit: '200000' } }
         );
       } else {
         // Same chain join event
@@ -170,11 +171,18 @@ export const useEvents = (filters?: EventFilters) => {
         await tx.wait();
       }
 
-      toast.success('Successfully joined event');
+      toast({
+        title: 'Successfully joined event',
+        status: 'success',
+        isClosable: true
+      });
       await fetchEvents();
     } catch (error) {
-        toast.error('Failed to fetch events', {
-          description: (error as Error).message
+        toast({
+          title: 'Failed to fetch events',
+          description: (error as Error).message,
+          status: 'error',
+          isClosable: true
         });
       throw error;
     } finally {

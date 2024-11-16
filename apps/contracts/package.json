@@ -23,7 +23,7 @@
         "@types/node": "^20.1.4",
         "chai": "^4.3.7",
         "dotenv": "^16.0.3",
-        "ethers": "^5.7.2",
+        "ethers": "6",
         "hardhat": "^2.14.0",
         "hardhat-gas-reporter": "^1.0.8",
         "solidity-coverage": "^0.8.1",
