@@ -5,3 +5,6 @@
 /.DS_Store
 /.turbo
 /node_modules
+/.yarn
+*.zip
+/.yarn
