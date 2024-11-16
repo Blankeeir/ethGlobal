@@ -2,10 +2,40 @@
 [2K[1G[1myarn run v1.22.22[22m
 [2K[1G[33mwarning[39m ../../package.json: "dependencies" has dependency "typescript" with range "^5.6.3" that collides with a dependency in "devDependencies" of the same name with version "^5.0.0"
 [2K[1G[2m$ tsc && vite build[22m
+[96msrc/App.tsx[0m:[93m10[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'EthereumWalletConnectors' is declared but its value is never read.
+
+[7m10[0m import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/App.tsx[0m:[93m12[0m:[93m7[0m - [91merror[0m[90m TS6133: [0m'walletConnectOptions' is declared but its value is never read.
+
+[7m12[0m const walletConnectOptions: WalletConnectOptions = {
+[7m  [0m [91m      ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/App.tsx[0m:[93m12[0m:[93m29[0m - [91merror[0m[90m TS2304: [0mCannot find name 'WalletConnectOptions'.
+
+[7m12[0m const walletConnectOptions: WalletConnectOptions = {
+[7m  [0m [91m                            ~~~~~~~~~~~~~~~~~~~~[0m
+
 [96msrc/components/Auth/DynamicAuthProvider.tsx[0m:[93m6[0m:[93m7[0m - [91merror[0m[90m TS6133: [0m'evmNetworks' is declared but its value is never read.
 
 [7m6[0m const evmNetworks = [{
 [7m [0m [91m      ~~~~~~~~~~~[0m
+
+[96msrc/components/buddy/BuddyProfile.tsx[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/frontend/src/hooks/useEns.ts' is not a module.
+
+[7m4[0m import { useENS } from '../../hooks/useEns';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/buddy/BuddyProfile.tsx[0m:[93m13[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'useEffect'.
+
+[7m13[0m   useEffect(() => {
+[7m  [0m [91m  ~~~~~~~~~[0m
+
+[96msrc/components/buddy/BuddyProfile.tsx[0m:[93m15[0m:[93m7[0m - [91merror[0m[90m TS2304: [0mCannot find name 'lookupAddress'.
+
+[7m15[0m       lookupAddress(address);
+[7m  [0m [91m      ~~~~~~~~~~~~~[0m
 
 [96msrc/components/Profile/TransactionHistory.tsx[0m:[93m19[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'AnimatedContainer' is declared but its value is never read.
 
@@ -22,17 +52,66 @@
 [7m63[0m           {transactions.map((tx, index) => (
 [7m  [0m [91m                                 ~~~~~[0m
 
-[96msrc/services/ProductService.ts[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2614: [0mModule '"web3-eth-contract"' has no exported member 'ContractInterface'. Did you mean to use 'import ContractInterface from "web3-eth-contract"' instead?
+[96msrc/hooks/usePushProtocol.ts[0m:[93m4[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'NotificationItem' is declared but its value is never read.
 
-[7m3[0m import { ContractInterface } from 'web3-eth-contract';
-[7m [0m [91m         ~~~~~~~~~~~~~~~~~[0m
+[7m4[0m import { NotificationItem } from '@pushprotocol/uiweb';
+[7m [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/hooks/usePushProtocol.ts[0m:[93m9[0m:[93m54[0m - [91merror[0m[90m TS2749: [0m'NotificationItem' refers to a value, but is being used as a type here. Did you mean 'typeof NotificationItem'?
+
+[7m9[0m   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+[7m [0m [91m                                                     ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/hooks/usePushProtocol.ts[0m:[93m10[0m:[93m10[0m - [91merror[0m[90m TS6133: [0m'pushUser' is declared but its value is never read.
+
+[7m10[0m   const [pushUser, setPushUser] = useState(null);
+[7m  [0m [91m         ~~~~~~~~[0m
+
+[96msrc/hooks/usePushProtocol.ts[0m:[93m28[0m:[93m19[0m - [91merror[0m[90m TS2345: [0mArgument of type 'IUser' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'IUser' provides no match for the signature '(prevState: null): null'.
+
+[7m28[0m       setPushUser(user);
+[7m  [0m [91m                  ~~~~[0m
+
+[96msrc/hooks/usePushProtocol.ts[0m:[93m32[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType '`0x${string}`' is not assignable to type 'SignerType'.
+
+[7m32[0m         signer: address,
+[7m  [0m [91m        ~~~~~~[0m
+
+  [96m../../node_modules/@pushprotocol/restapi/src/lib/channels/subscribe.d.ts[0m:[93m4[0m:[93m5[0m
+    [7m4[0m     signer: SignerType;
+    [7m [0m [96m    ~~~~~~[0m
+    The expected type comes from property 'signer' which is declared here on type 'SubscribeOptionsType'
+
+[96msrc/services/ProductService.ts[0m:[93m8[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'useContract' is declared but its value is never read.
+
+[7m8[0m import { useContract } from '../hooks';
+[7m [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/ProductService.ts[0m:[93m10[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'SERVARE_NFT_ADDRESS' is declared but its value is never read.
+
+[7m10[0m import { SERVARE_NFT_ADDRESS } from '../const';
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/ProductService.ts[0m:[93m11[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'surfoodNFTAbi' is declared but its value is never read.
+
+[7m11[0m import surfoodNFTAbi from '../abi/SurfoodNFT.json';
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/services/ProductService.ts[0m:[93m13[0m:[93m1[0m - [91merror[0m[90m TS6133: [0m'AbiItem' is declared but its value is never read.
+
+[7m13[0m import { AbiItem } from 'web3-utils';
+[7m  [0m [91m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 
-Found 5 errors in 3 files.
+Found 19 errors in 6 files.
 
 Errors  Files
+     3  src/App.tsx[90m:10[0m
      1  src/components/Auth/DynamicAuthProvider.tsx[90m:6[0m
+     3  src/components/buddy/BuddyProfile.tsx[90m:4[0m
      3  src/components/Profile/TransactionHistory.tsx[90m:19[0m
-     1  src/services/ProductService.ts[90m:3[0m
+     5  src/hooks/usePushProtocol.ts[90m:4[0m
+     4  src/services/ProductService.ts[90m:8[0m
 [2K[1G[31merror[39m Command failed with exit code 2.
 [2K[1G[34minfo[39m Visit [1mhttps://yarnpkg.com/en/docs/cli/run[22m for documentation about this command.

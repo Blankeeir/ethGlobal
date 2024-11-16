@@ -6,9 +6,9 @@
     "auditLog": "/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/backend/src/logs/error/.5fc314b748504bdba2219054e226847a9bd7b39b-audit.json",
     "files": [
         {
-            "date": 1731401989358,
-            "name": "/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/backend/src/logs/error/2024-11-12.log",
-            "hash": "9721d91d1ce9a04c273954d3fe2c7e7d3112cd8b47bca10a2a767e602645a1ab"
+            "date": 1731716878499,
+            "name": "/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/apps/backend/src/logs/error/2024-11-16.log",
+            "hash": "fd128a680eb573b844c925fdaaff5e01727b34b8049fd369d7db457af2acd1d2"
         }
     ],
     "hashType": "sha256"

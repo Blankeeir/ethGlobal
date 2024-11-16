@@ -4,5 +4,5 @@
 [2K[1G[33mwarning[39m package.json: "dependencies" has dependency "ethers" with range "^6.12.0" that collides with a dependency in "devDependencies" of the same name with version "^6.11.1"
 [2K[1G[33mwarning[39m ../../package.json: "dependencies" has dependency "typescript" with range "^5.6.3" that collides with a dependency in "devDependencies" of the same name with version "^5.0.0"
 [2K[1G[2m$ swc src -d dist --source-maps --copy-files[22m
-Successfully compiled: 28 files, copied 6 files with swc (51.03ms)
-[2K[1G✨  Done in 0.33s.
+Successfully compiled: 28 files, copied 16 files with swc (54.15ms)
+[2K[1G✨  Done in 1.15s.

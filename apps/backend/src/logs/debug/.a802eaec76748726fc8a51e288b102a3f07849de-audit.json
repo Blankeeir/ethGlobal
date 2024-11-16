@@ -29,6 +29,16 @@
             "date": 1731038823875,
             "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-08.log",
             "hash": "55885e9edc0c819082fdeca922b7f686496da6cda69d66c92b4455caf05b1c71"
+        },
+        {
+            "date": 1731405306910,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-12.log",
+            "hash": "7bd9212c5c5181caef151795c7b2260ca0e7f736cbeb3a47add9934fa3cff778"
+        },
+        {
+            "date": 1731668802061,
+            "name": "/Users/emma/Desktop/Repo/Servare/apps/backend/src/logs/debug/2024-11-15.log",
+            "hash": "4c96a72dbd0eaaf496616f8bd2792c454c0f4b5f07d09231fe8d40f191a82456"
         }
     ],
     "hashType": "sha256"
