@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { Container } from 'typedi';
-import { OpenaiService } from '@/services/openai.service';
+import { Container, Service } from 'typedi';
+import { OpenaiService } from '@/services/openai.service(Deprecated)';
 import { Submission } from '@/interfaces/submission.interface';
 import { HttpException } from '@/exceptions/HttpException';
 import { ContractsService } from '@/services/contracts.service';
