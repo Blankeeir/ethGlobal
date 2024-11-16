@@ -1,3 +1,4 @@
+//contracts/PostNFT.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -8,36 +9,19 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-interface IBuddyVerification {
-    function isBuddy(address user) external view returns (bool);
-}
 
-contract PostNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
+// import models
+import "./models/post.sol";
+import "./models/Comment.sol";
+
+// import interfaces
+import "./interfaces/IBuddyVerification.sol";
+
+
+contract PostNFT is ERC721URIStorage, Ownable(msg.sender), ReentrancyGuard {
     using Strings for uint256;
     
     uint256 private _currentTokenId;
-    
-    // Core post data structure
-    struct Post {
-        string content;
-        string imageURI;
-        address author;
-        uint256 timestamp;
-        uint256 likes;
-        bool isBuddyOnly;
-        bool isDeleted;
-        string category; // Mental health category/topic
-        uint256 commentCount;
-    }
-
-    // Comment data structure
-    struct Comment {
-        address commenter;
-        string content;
-        uint256 timestamp;
-        bool isDeleted;
-    }
-
     // Storage
     mapping(uint256 => Post) public posts;
     mapping(uint256 => mapping(address => bool)) public postLikes;
@@ -67,8 +51,13 @@ contract PostNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
     error EmptyContent();
     error DeletedPost();
     error NotBuddy();
+    error InvalidAddress();
 
-    constructor(address _buddyVerification) ERC721("Mental Health Post", "MHP") {
+    // Constructor with proper initialization of all parent contracts
+    constructor(
+        address _buddyVerification
+    ) ERC721("Mental Health Post", "MHP") {
+        if (_buddyVerification == address(0)) revert InvalidAddress();
         buddyVerification = IBuddyVerification(_buddyVerification);
     }
 

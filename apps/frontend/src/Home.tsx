@@ -1,43 +1,86 @@
-// pages/Home.tsx
-import React from 'react';
-import { Box, Container, VStack, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
-import { InfoCard } from './components/InfoCard';
-import { Instructions } from './components/Instructions';
-import { MarketplacePreview } from './components/MarketPlacePreview';
-// import { AnimatedContainer } from './components/Animations/AnimatedContainer';
+// Home.tsx
+import React, { useState } from 'react';
+import { Container, Grid, GridItem, VStack, useBreakpointValue } from '@chakra-ui/react';
+import { AnimatedContainer } from './components/Animations/AnimatedContainer';
+import { UserStats } from './components/Profile/UserStats';
+import { BuddyList } from './components/BuddyList';
+import { ExplorePosts } from './components/ExplorePosts';
+import { EventList } from './components/EventList';
+import { motion } from 'framer-motion';
 
 export const Home: React.FC = () => {
-  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
 
   return (
-    <Box bg={bgColor} minH="100%">
-      <Container maxW="container.xl" py={8}>
-        {/* <AnimatedContainer
-          variant="slide"
-          staggerChildren
-          staggerDelay={0.2}
-          animateOnScroll
-        > */}
-          <VStack spacing={8} w="full">
-            {/* InfoCard Section */}
-            <Box w="full">
-              <InfoCard />
-            </Box>
+    <Container maxW="container.xl" py={8}>
+      <AnimatedContainer
+        variant="fade"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <VStack spacing={6} w="full">
+          {/* User Statistics with scale animation */}
+          <AnimatedContainer variant="scale" animateOnScroll>
+            <UserStats />
+          </AnimatedContainer>
 
-            {/* Instructions Section */}
-            <Box w="full">
-              <Instructions />
-            </Box>
+          {/* Main Content Grid with staggered animations */}
+          <Grid
+            templateColumns={`repeat(${columns}, 1fr)`}
+            gap={6}
+            w="full"
+            as={motion.div}
+          >
+            {/* Chat with Buddies */}
+            <GridItem>
+              <AnimatedContainer
+                variant="slide"
+                animateOnScroll
+                delay={0.1}
+              >
+                <BuddyList />
+              </AnimatedContainer>
+            </GridItem>
 
-            {/* Marketplace Preview Section */}
-            <Box w="full">
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-                <MarketplacePreview />
-              </SimpleGrid>
-            </Box>
-          </VStack>
-        {/* </AnimatedContainer> */}
-      </Container>
-    </Box>
+            {/* Posts Feed */}
+            <GridItem>
+              <AnimatedContainer
+                variant="slide"
+                animateOnScroll
+                delay={0.2}
+              >
+                <ExplorePosts />
+              </AnimatedContainer>
+            </GridItem>
+
+            {/* Events & Communities */}
+            <GridItem>
+              <AnimatedContainer
+                variant="slide"
+                animateOnScroll
+                delay={0.3}
+              >
+                <EventList
+                  selectedCategory={selectedCategory}
+                  onCategoryChange={setSelectedCategory}
+                />
+              </AnimatedContainer>
+            </GridItem>
+          </Grid>
+        </VStack>
+      </AnimatedContainer>
+    </Container>
   );
 };

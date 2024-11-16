@@ -13,7 +13,11 @@ import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import bodyParser from 'body-parser';
-
+import { connectDB } from './config/database';
+import userRoutes from './routes/user.routes';
+import postRoutes from './routes/post.routes';
+import eventRoutes from './routes/event.routes';
+import authRoutes from './routes/auth.routes';
 export class App {
   public app: express.Application;
   public env: string;
@@ -21,8 +25,18 @@ export class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
+    // Middleware
+    this.app.use(cors());
+    this.app.use(helmet());
+    this.app.use(compression());
+    this.app.use(express.json());
     this.env = NODE_ENV || 'production';
     this.port = PORT || 3000;
+    // Error handling
+    this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+      console.error(err.stack);
+      res.status(500).send({ error: 'Something went wrong!' });
+    });
 
     this.initializeLimits();
     this.initializeMiddlewares();
