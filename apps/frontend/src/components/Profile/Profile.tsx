@@ -1,82 +1,105 @@
-// components/UserProfile/UserStats.tsx
-import React from 'react';
+// components/UserProfile/Profile.tsx
+import React, { useState } from 'react';
 import {
   Box,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
+  Button,
+  Flex,
+  Avatar,
+  Text,
+  VStack,
   useColorModeValue,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
+import { useParams } from 'react-router-dom';
+import { useUserData } from '../../hooks/useUserData';
+import { ExplorePosts } from '../ExplorePosts';
+import { BuddyList } from '../BuddyList';
+import { EditProfileModal } from './EditProfileModal';
 
-interface StatsCardProps {
-  title: string;
-  stat: number;
-  icon: React.ReactNode;
-}
-
-function StatsCard(props: StatsCardProps) {
-  const { title, stat, icon } = props;
-  const animatedValue = useAnimatedCounter(stat);
+export const Profile = () => {
+  const { address } = useParams();
+  const { profile, loading } = useUserData(address!);
+  const [isEditing, setIsEditing] = useState(false);
   
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Stat
-        px={{ base: 2, md: 4 }}
-        py={'5'}
-        shadow={'xl'}
-        border={'1px solid'}
-        borderColor={useColorModeValue('gray.800', 'gray.500')}
-        rounded={'lg'}
-      >
-        <Box pl={{ base: 2, md: 4 }}>
-          <StatLabel fontWeight={'medium'} isTruncated>
-            {title}
-          </StatLabel>
-          <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
-            {animatedValue}
-          </StatNumber>
-        </Box>
-      </Stat>
-    </motion.div>
-  );
-}
-
-export const UserStats = () => {
-  const { stats, loading } = useUserData();
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
   if (loading) return <Box>Loading...</Box>;
 
   return (
-    <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
-      <SimpleGrid columns={{ base: 1, md: 4 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard
-          title={'Today\'s Connections'}
-          stat={stats.dateRange.today}
-          icon={<FiUsers />}
-        />
-        <StatsCard
-          title={'Weekly Connections'}
-          stat={stats.dateRange.week}
-          icon={<FiUsers />}
-        />
-        <StatsCard
-          title={'Total Posts'}
-          stat={stats.posts}
-          icon={<FiFile />}
-        />
-        <StatsCard
-          title={'Total Likes'}
-          stat={stats.likes}
-          icon={<FiHeart />}
-        />
-      </SimpleGrid>
+    <Box maxW="7xl" mx="auto" px={{ base: 4, md: 8 }} py={8}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Box
+          bg={bgColor}
+          shadow="lg"
+          rounded="lg"
+          p={6}
+          mb={8}
+        >
+          <Flex direction={{ base: 'column', md: 'row' }} align="center">
+            <Avatar
+              size="2xl"
+              name={profile.ensName || profile.address}
+              src={profile.avatar}
+              mb={{ base: 4, md: 0 }}
+            />
+            <VStack
+              ml={{ base: 0, md: 8 }}
+              align={{ base: 'center', md: 'start' }}
+              spacing={2}
+            >
+              <Text fontSize="2xl" fontWeight="bold">
+                {profile.ensName || `${profile.address.slice(0, 6)}...${profile.address.slice(-4)}`}
+              </Text>
+              {profile.bio && (
+                <Text color="gray.600">{profile.bio}</Text>
+              )}
+              <Button
+                colorScheme="blue"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit Profile
+              </Button>
+            </VStack>
+          </Flex>
+        </Box>
+
+        <Tabs variant="enclosed">
+          <TabList>
+            <Tab>Posts</Tab>
+            <Tab>Connections</Tab>
+            <Tab>Events</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <ExplorePosts userAddress={address} />
+            </TabPanel>
+            <TabPanel>
+              <BuddyList userAddress={address} />
+            </TabPanel>
+            <TabPanel>
+              <EventList userAddress={address} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </motion.div>
+
+      <EditProfileModal
+        isOpen={isEditing}
+        onClose={() => setIsEditing(false)}
+        profile={profile}
+      />
     </Box>
   );
 };

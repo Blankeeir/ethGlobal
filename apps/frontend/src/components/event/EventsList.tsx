@@ -13,12 +13,13 @@ import {
   MenuList,
   MenuItem,
   IconButton,
-  Divider,
-  useDisclosure
+  Divider, 
 } from '@chakra-ui/react';
+
+import { useDisclosure } from '../../hooks/useDisclosure';
 import { FiFilter, FiCalendar, FiUsers, FiMessageCircle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from '../hooks/useEvents';
+import { useEvents } from '../../hooks/useEvents';
 import { JoinEventModal } from './modals/JoinEventModal';
 
 interface EventListProps {

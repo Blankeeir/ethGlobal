@@ -1,4 +1,7 @@
 // src/services/MessageService.ts
+import { FilecoinService} from "./FilecoinService";
+
+
 export class MessageService {
     constructor(
       private filecoinService: FilecoinService,
@@ -106,4 +109,5 @@ export class MessageService {
       }
     }
   }
+
   

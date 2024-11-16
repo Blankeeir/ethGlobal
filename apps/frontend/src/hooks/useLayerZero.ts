@@ -1,7 +1,7 @@
 // apps/frontend/src/hooks/useLayerZero.ts
 import { useState, useCallback } from 'react';
-import { ethers } from 'ethers';
-import { utilities } from 'ethers-utils';
+import { ethers, constants } from 'ethers';
+import { utils } from 'ethers/lib/utils';
 import { useToast } from './useToast';
 import { useWeb3 } from './useWeb3';
 
@@ -24,12 +24,12 @@ export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
   const toast = useToast();
 
   // Default adapter parameters
-  const defaultAdapterParams: AdapterParams = {
+  const defaultAdapterParams: AdapterParams = useMemo(() => ({
     version: 1,
     gasLimit: '200000',
     nativeForDst: '0',
-    dstNativeAddr: ethers.constants.AddressZero
-  };
+    dstNativeAddr: constants.AddressZero
+  }), []);
 
   const estimateFees = useCallback(async (
     dstChainId: number,
@@ -64,11 +64,15 @@ export const useLayerZero = (config?: Partial<LayerZeroConfig>) => {
       );
 
       return { nativeFee, zroFee };
-    } catch (error: any) {
-      console.error('Error estimating fees:', error);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error estimating fees:', error);
+      } else {
+        console.error('Unexpected error:', error);
+      }
       return null;
     }
-  }, [signer, config, address]);
+  }, [signer, config, address, defaultAdapterParams]);
 
   const sendMessage = useCallback(async (
     dstChainId: number,

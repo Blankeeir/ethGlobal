@@ -21,8 +21,8 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './Home';
 import { BuddyList } from './components/buddy/BuddyList';
-import { BuddyChat } from './pages/BuddyChat';
-import { EventDetails } from './pages/EventDetails';
+// import { BuddyChat } from './BuddyChat';
+import { EventList} from './components/event/EventsList';
 import { Profile } from './pages/Profile';
 
 // import { UserProfile } from './components/Profile/UserProfile';

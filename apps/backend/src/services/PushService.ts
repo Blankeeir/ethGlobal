@@ -11,17 +11,7 @@ export class PushNotificationService {
     this.pushAPI = pushClient;
   }
 
-  async sendNotification({
-    recipient,
-    title,
-    body,
-    payload = {}
-  }: {
-    recipient: string;
-    title: string;
-    body: string;
-    payload?: any;
-  }) {
+  async sendNotification({ recipient, title, body, payload = {} }: { recipient: string; title: string; body: string; payload?: any }) {
     try {
       await this.pushAPI.payloads.sendNotification({
         signer: getProvider().getSigner(),

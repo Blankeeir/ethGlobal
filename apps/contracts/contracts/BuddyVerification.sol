@@ -4,11 +4,10 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-
-import "./interfaces/IEnsResolver.sol";
+import "./interfaces/IENS.sol";
 import "./models/Buddy.sol";
 
 contract BuddyVerification is Ownable(msg.sender) {
@@ -23,11 +22,11 @@ contract BuddyVerification is Ownable(msg.sender) {
     event BuddyRated(address indexed buddy, uint256 rating);
     event SpecialtiesUpdated(address indexed buddy, string[] specialties);
 
-    IENSResolver public ensResolver;
+    IENS public ensResolver;
 
     constructor(address _ensResolver) {
         require(_ensResolver != address(0), "Invalid ENS resolver address");
-        ensResolver = IENSResolver(_ensResolver);
+        ensResolver = IENS(_ensResolver);
     }
 
     function getMessageHash(

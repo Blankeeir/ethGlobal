@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Grid, GridItem, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { AnimatedContainer } from './components/Animations/AnimatedContainer';
 import { UserStats } from './components/Profile/UserStats';
-import { BuddyList } from './components/BuddyList';
+import { BuddyList } from './components/buddy/BuddyList';
 import { ExplorePosts } from './components/ExplorePosts';
 import { EventList } from './components/EventList';
 import { motion } from 'framer-motion';

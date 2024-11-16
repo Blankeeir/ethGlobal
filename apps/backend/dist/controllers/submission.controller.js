@@ -9,7 +9,7 @@ Object.defineProperty(exports, "SubmissionController", {
     }
 });
 const _typedi = require("typedi");
-const _openaiservice = require("../services/openai.service");
+const _openaiserviceDeprecated = require("../services/openai.service(Deprecated)");
 const _HttpException = require("../exceptions/HttpException");
 const _contractsservice = require("../services/contracts.service");
 function _define_property(obj, key, value) {
@@ -66,7 +66,7 @@ function _object_spread_props(target, source) {
 }
 let SubmissionController = class SubmissionController {
     constructor(){
-        _define_property(this, "openai", _typedi.Container.get(_openaiservice.OpenaiService));
+        _define_property(this, "openai", _typedi.Container.get(_openaiserviceDeprecated.OpenaiService));
         _define_property(this, "contracts", _typedi.Container.get(_contractsservice.ContractsService));
         _define_property(this, "submitReceipt", async (req, res, next)=>{
             try {

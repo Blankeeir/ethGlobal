@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "@layerzerolabs/solidity-examples/contracts/lzApp/NonblockingLzApp.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol";
 import "@hyperlane-xyz/core/contracts/interfaces/IInterchainGasPaymaster.sol";

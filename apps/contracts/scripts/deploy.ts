@@ -1,39 +1,122 @@
 // scripts/deploy.ts
-import { ethers } from "hardhat";
+import { ethers, run, network } from "hardhat";
+import { Contract } from "ethers";
+import { config as dotenvConfig } from "dotenv";
+import { resolve } from "path";
+
+dotenvConfig({ path: resolve(__dirname, "../.env") });
 
 async function main() {
+  console.log("Starting deployment...");
+  console.log("Network:", network.name);
+
   const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with account:", deployer.address);
 
-  console.log("Deploying contracts with the account:", deployer.address);
+  const initialBalance = await deployer.getBalance();
+  console.log("Account balance:", ethers.utils.formatEther(initialBalance));
 
-  // Deploy MentalHealthIdentity
-  const MentalHealthIdentity = await ethers.getContractFactory("MentalHealthIdentity");
-  const identity = await MentalHealthIdentity.deploy(
-    process.env.WORLD_ID_ADDRESS!,       // WorldID contract address
-    process.env.HYPERLANE_MAILBOX!,      // Hyperlane mailbox address
-    process.env.ENS_REGISTRY!            // ENS registry address
-  );
+  // Helper function for verification
+  async function verify(contract: Contract, args: any[]) {
+    if (network.name !== "hardhat" && network.name !== "localhost") {
+      console.log("Verifying contract...");
+      try {
+        await run("verify:verify", {
+          address: contract.address,
+          constructorArguments: args,
+        });
+      } catch (err) {
+        console.log("Verification error:", err);
+      }
+    }
+  }
 
-  await identity.deployed();
+  try {
+    // 1. Deploy MentalHealthIdentity
+    console.log("\nDeploying MentalHealthIdentity...");
+    const MentalHealthIdentity = await ethers.getContractFactory("MentalHealthIdentity");
+    const identityArgs = [
+      process.env.WORLD_ID_ADDRESS,
+      process.env.WORLD_ID_APP_ID,
+      process.env.WORLD_ID_ACTION_ID,
+      process.env.WORLD_ID_GROUP_ID,
+      process.env.ENS_REGISTRY_ADDRESS,
+      process.env.ENS_RESOLVER_ADDRESS,
+      process.env.HYPERLANE_MAILBOX_ADDRESS
+    ];
+    const identity = await MentalHealthIdentity.deploy(...identityArgs);
+    await identity.deployed();
+    console.log("MentalHealthIdentity deployed to:", identity.address);
+    await verify(identity, identityArgs);
 
-  console.log("MentalHealthIdentity deployed to:", identity.address);
+    // 2. Deploy BuddyVerification
+    console.log("\nDeploying BuddyVerification...");
+    const BuddyVerification = await ethers.getContractFactory("BuddyVerification");
+    const buddyArgs = [process.env.ENS_RESOLVER_ADDRESS];
+    const buddy = await BuddyVerification.deploy(...buddyArgs);
+    await buddy.deployed();
+    console.log("BuddyVerification deployed to:", buddy.address);
+    await verify(buddy, buddyArgs);
 
-  // Verify contract
-  if (process.env.ETHERSCAN_API_KEY) {
-    await hre.run("verify:verify", {
-      address: identity.address,
-      constructorArguments: [
-        process.env.WORLD_ID_ADDRESS,
-        process.env.HYPERLANE_MAILBOX,
-        process.env.ENS_REGISTRY
-      ],
-    });
+    // 3. Deploy MentalHealthEvents
+    console.log("\nDeploying MentalHealthEvents...");
+    const MentalHealthEvents = await ethers.getContractFactory("MentalHealthEvents");
+    const eventsArgs = [identity.address];
+    const events = await MentalHealthEvents.deploy(...eventsArgs);
+    await events.deployed();
+    console.log("MentalHealthEvents deployed to:", events.address);
+    await verify(events, eventsArgs);
+
+    // 4. Deploy CrossChainChat
+    console.log("\nDeploying CrossChainChat...");
+    const CrossChainChat = await ethers.getContractFactory("CrossChainChat");
+    const chatArgs = [
+      process.env.LAYER_ZERO_ENDPOINT,
+      process.env.HYPERLANE_MAILBOX_ADDRESS,
+      process.env.HYPERLANE_IGP_ADDRESS,
+      process.env.FILECOIN_STORAGE_ADDRESS
+    ];
+    const chat = await CrossChainChat.deploy(...chatArgs);
+    await chat.deployed();
+    console.log("CrossChainChat deployed to:", chat.address);
+    await verify(chat, chatArgs);
+
+    // Log deployment addresses
+    console.log("\nDeployment Summary:");
+    console.log("--------------------");
+    console.log("MentalHealthIdentity:", identity.address);
+    console.log("BuddyVerification:", buddy.address);
+    console.log("MentalHealthEvents:", events.address);
+    console.log("CrossChainChat:", chat.address);
+
+    // Calculate gas used
+    const finalBalance = await deployer.getBalance();
+    const gasUsed = initialBalance.sub(finalBalance);
+    console.log("\nTotal gas used:", ethers.utils.formatEther(gasUsed), "ETH");
+
+    // Save deployment addresses
+    const fs = require('fs');
+    const deployments = {
+      network: network.name,
+      MentalHealthIdentity: identity.address,
+      BuddyVerification: buddy.address,
+      MentalHealthEvents: events.address,
+      CrossChainChat: chat.address,
+      timestamp: new Date().toISOString()
+    };
+
+    fs.writeFileSync(
+      `deployments/${network.name}.json`,
+      JSON.stringify(deployments, null, 2)
+    );
+
+  } catch (error) {
+    console.error("Deployment failed:", error);
+    process.exit(1);
   }
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

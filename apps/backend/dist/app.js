@@ -108,8 +108,18 @@ let App = class App {
         _define_property(this, "env", void 0);
         _define_property(this, "port", void 0);
         this.app = (0, _express.default)();
+        this.app.use((0, _cors.default)());
+        this.app.use((0, _helmet.default)());
+        this.app.use((0, _compression.default)());
+        this.app.use(_express.default.json());
         this.env = _config.NODE_ENV || 'production';
         this.port = _config.PORT || 3000;
+        this.app.use((err, req, res, next)=>{
+            console.error(err.stack);
+            res.status(500).send({
+                error: 'Something went wrong!'
+            });
+        });
         this.initializeLimits();
         this.initializeMiddlewares();
         this.initializeRoutes(routes);

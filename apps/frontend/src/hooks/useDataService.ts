@@ -12,7 +12,7 @@ export const useDataService = () => {
   const { sendNotification } = usePushNotifications();
 
   const filecoinService = new FilecoinService(process.env.REACT_APP_WEB3_STORAGE_TOKEN!);
-  const PushService = new pushService(window.ethereum);
+  const pushService = new PushService(window.ethereum);
   const dataService = new DataService(filecoinService, pushService);
 
   const createPost = async (postData: unknown) => {

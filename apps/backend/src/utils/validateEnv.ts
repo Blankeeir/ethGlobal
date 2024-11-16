@@ -22,5 +22,6 @@ export const ValidateEnv = () => {
     OPENAI_API_KEY: openApiKey(),
     MAX_FILE_SIZE: str({ devDefault: '10mb' }),
     ADMIN_ADDRESS: str({ default: '' }),
+
   });
 };

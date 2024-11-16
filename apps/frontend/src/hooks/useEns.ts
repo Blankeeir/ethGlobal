@@ -1,7 +1,7 @@
 // src/hooks/useENS.ts
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { useProvider } from 'wagmi';
+import { useProvider } from 'wagmi/core';
 
 export const useENS = () => {
   const provider = useProvider();

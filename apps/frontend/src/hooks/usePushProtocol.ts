@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi';
 export const usePushProtocol = () => {
   const { address } = useAccount();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [pushUser, setPushUser] = useState(null);
+  const [pushUser, setPushUser] = useState<PushAPI.IUser | null>(null);
 
   const initializePush = async () => {
     if (!address) return;

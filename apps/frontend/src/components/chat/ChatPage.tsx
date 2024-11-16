@@ -18,7 +18,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { FiSend, FiPaperclip } from 'react-icons/fi';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3 } from '../../hooks/useWeb3';
 import { useENS } from '../../hooks/useEns';
 import { usePushProtocol } from '../../hooks/usePushProtocol';
 import { useFilecoinStorage } from '../../hooks/useFilecoinStorage';

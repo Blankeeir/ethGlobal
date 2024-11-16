@@ -16,4 +16,4 @@ router.use('/buddies', buddyRoutes);
 router.use('/events', eventRoutes);
 router.use('/chat', chatRoutes);
 
-export default router;
+export default router; 

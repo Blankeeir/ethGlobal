@@ -1,5 +1,5 @@
 // apps/frontend/src/services/ENSService.ts
-import { ENS } from '@ensdomains/ensjs';
+import ENS, { getEnsAddress } from '@ensdomains/ensjs';
 import { ethers } from 'ethers';
 
 export class ENSService {

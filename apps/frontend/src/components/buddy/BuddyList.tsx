@@ -14,9 +14,9 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useENS } from '../../hooks/useEns';
-import { usePushProtocol } from '../hooks/usePushProtocol';
-import { useWeb3 } from '../../hooks/useWeb3.ts';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { usePushProtocol } from '../../hooks/usePushProtocol';
+import { useWeb3 } from '../../hooks/useWeb3';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { AnimatedContainer } from '../Animations/AnimatedContainer';
 
 export const BuddyList: React.FC = () => {

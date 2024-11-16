@@ -4,5 +4,39 @@
 [2K[1G[33mwarning[39m package.json: "dependencies" has dependency "ethers" with range "^6.12.0" that collides with a dependency in "devDependencies" of the same name with version "^6.11.1"
 [2K[1G[33mwarning[39m ../../package.json: "dependencies" has dependency "typescript" with range "^5.6.3" that collides with a dependency in "devDependencies" of the same name with version "^5.0.0"
 [2K[1G[2m$ swc src -d dist --source-maps --copy-files[22m
-Successfully compiled: 28 files, copied 16 files with swc (54.15ms)
-[2K[1G✨  Done in 1.15s.
+[31m
+  [38;2;255;30;30m×[0m await isn't allowed in non-async function
+     ╭─[[38;2;92;157;255;1;4msrc/services/UserDataService.ts[0m:111:1]
+ [2m111[0m │       const events = await this.buddyContract.queryFilter(filter);
+ [2m112[0m │       
+ [2m113[0m │       return events.filter(event => {
+ [2m114[0m │         const block = await this.provider.getBlock(event.blockNumber);
+     · [38;2;246;87;248m                            ────[0m
+ [2m115[0m │         return block.timestamp * 1000 >= startOfDay;
+ [2m116[0m │       }).length;
+ [2m117[0m │     } catch (error) {
+     ╰────
+
+  [38;2;255;30;30m×[0m await isn't allowed in non-async function
+     ╭─[[38;2;92;157;255;1;4msrc/services/UserDataService.ts[0m:127:1]
+ [2m127[0m │       const events = await this.buddyContract.queryFilter(filter);
+ [2m128[0m │       
+ [2m129[0m │       return events.filter(event => {
+ [2m130[0m │         const block = await this.provider.getBlock(event.blockNumber);
+     · [38;2;246;87;248m                            ────[0m
+ [2m131[0m │         return block.timestamp * 1000 >= startOfWeek;
+ [2m132[0m │       }).length;
+ [2m133[0m │     } catch (error) {
+     ╰────
+
+
+Caused by:
+    Syntax Error[39m
+Successfully compiled: 42 files, copied 16 files with swc (66.17ms)
+Failed to compile 1 file with swc.
+Error: Failed to compile:
+src/services/UserDataService.ts
+    at initialCompilation (/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/node_modules/[4m@swc[24m/cli/lib/swc/dir.js:163:19)
+    at async dir (/Users/emma/Desktop/Repo/ethGlobalBangkok/ethGlobal/node_modules/[4m@swc[24m/cli/lib/swc/dir.js:228:5)
+[2K[1G[31merror[39m Command failed with exit code 1.
+[2K[1G[34minfo[39m Visit [1mhttps://yarnpkg.com/en/docs/cli/run[22m for documentation about this command.

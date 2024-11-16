@@ -177,13 +177,10 @@ export class UserDataService {
     try {
       // Get profile CID from contract
       const profileCID = await this.buddyContract.getProfileCID(address);
-      
       // Get profile data from Filecoin
       const profileData = await this.filecoinService.retrieveJSON(profileCID);
-      
       // Get ENS name
       const ensName = await this.ensService.getENSName(address);
-      
       // Get buddy status and verification
       const buddyData = await this.buddyContract.buddies(address);
 
@@ -197,7 +194,7 @@ export class UserDataService {
         totalLikes: await this.getTotalLikes(address),
         totalConnections: buddyData.totalConnections.toNumber(),
         rating: buddyData.rating.toNumber(),
-        specialties: buddyData.specialties
+        specialties: buddyData.specialties,
       };
     } catch (error) {
       console.error('Error fetching profile:', error);
