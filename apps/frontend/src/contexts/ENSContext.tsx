@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3 } from '../contexts/Web3Context';
 
 interface ENSContextType {
   resolveName: (name: string) => Promise<string | null>;
@@ -12,13 +12,17 @@ interface ENSContextType {
 const ENSContext = createContext<ENSContextType | undefined>(undefined);
 
 export const ENSProvider = ({ children }: { children: ReactNode }) => {
-  const { provider } = useWeb3();
+  const { context: { provider } } = useWeb3();
 const [ens, setEns] = useState<ethers.Contract | null>(null);
 
   useEffect(() => {
-    if (provider) {
-      setEns(provider.getResolver());
-    }
+    const setupENS = async () => {
+      if (provider) {
+        const ensContract = new ethers.Contract('0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', ['function resolver(bytes32 node) view returns (address)'], provider);
+        setEns(ensContract);
+      }
+    };
+    setupENS();
   }, [provider]);
 
   const resolveName = async (name: string): Promise<string | null> => {

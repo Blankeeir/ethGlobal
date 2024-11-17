@@ -18,8 +18,8 @@ _export(exports, {
 });
 const _fs = require("fs");
 const _path = require("path");
-const _winston = _interop_require_default(require("winston"));
-const _winstondailyrotatefile = _interop_require_default(require("winston-daily-rotate-file"));
+const _winston = /*#__PURE__*/ _interop_require_default(require("winston"));
+const _winstondailyrotatefile = /*#__PURE__*/ _interop_require_default(require("winston-daily-rotate-file"));
 const _config = require("../config");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {

@@ -16,12 +16,12 @@ _export(exports, {
         return toNetwork;
     }
 });
-var Network;
-(function(Network) {
+var Network = /*#__PURE__*/ function(Network) {
     Network["solo"] = "solo";
     Network["testnet"] = "testnet";
     Network["mainnet"] = "mainnet";
-})(Network || (Network = {}));
+    return Network;
+}({});
 const toNetwork = (network)=>{
     switch(network){
         case 'solo':

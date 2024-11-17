@@ -41,20 +41,25 @@ export const CoinbaseCheckout: React.FC<CheckoutModalProps> = ({
 
     try {
       // Initialize Coinbase checkout
-      const checkout = await sdk.createCheckout({
-        tokenId,
-        price,
-        currency: 'ETH',
+      const response = await fetch('https://api.commerce.coinbase.com/charges', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CC-Api-Key': process.env.NEXT_PUBLIC_COINBASE_COMMERCE_API_KEY || '',
+        },
+        body: JSON.stringify({
+          name: `NFT #${tokenId}`,
+          description: `Purchase NFT #${tokenId}`,
+          pricing_type: 'fixed_price',
+          local_price: {
+            amount: price,
+            currency: 'ETH'
+          }
+        })
       });
 
-      // Handle successful purchase
-      checkout.on('success', () => {
-        onSuccess();
-        onClose();
-      });
-
-      // Open checkout
-      await checkout.show();
+      const charge = await response.json();
+      window.location.href = charge.data.hosted_url;
     } catch (error) {
       console.error('Checkout error:', error);
     }

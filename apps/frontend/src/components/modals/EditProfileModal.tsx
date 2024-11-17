@@ -36,6 +36,7 @@ interface EditProfileModalProps {
     bio?: string;
     avatar?: string;
   };
+  
 }
 
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({

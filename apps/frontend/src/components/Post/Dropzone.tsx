@@ -6,7 +6,6 @@ export interface FileWithPreview extends File {
 import React, { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import { Box, HStack, Text, VStack, Image, useToast } from "@chakra-ui/react";
-import { ScanIcon } from "./Icon";
 import { useWallet } from "@vechain/dapp-kit-react";
 
 interface DropzoneProps {
@@ -157,20 +156,24 @@ export const Dropzone: React.FC<DropzoneProps> = ({
             </Text>
           </Box>
         ) : (
-          <HStack spacing={4}>
-            <ScanIcon size={120} color="gray.400" />
-            <VStack spacing={2} align="start">
-              <Text fontWeight="medium">
-                Drop your file here, or click to select
-              </Text>
-              <Text fontSize="sm" color="gray.500">
-                Supports: {acceptedFileTypes.join(", ")}
-              </Text>
-              <Text fontSize="sm" color="gray.500">
-                Max size: {Math.floor(maxSize / 1024 / 1024)}MB
-              </Text>
+            <VStack spacing={2}>
+            <Image 
+              src="/upload-icon.png" 
+              alt="Upload"
+              width={80}
+              height={80}
+            />
+            
+            <Text fontWeight="medium">
+              Drop your file here, or click to select
+            </Text>
+            <Text fontSize="sm" color="gray.500">
+              Supports: {acceptedFileTypes.join(", ")}
+            </Text>
+            <Text fontSize="sm" color="gray.500">
+              Max size: {Math.floor(maxSize / 1024 / 1024)}MB
+            </Text>
             </VStack>
-          </HStack>
         )}
       </Box>
     </VStack>

@@ -133,6 +133,45 @@ export const useNFTPosts = () => {
     }
   };
 
+  const likePosts = async (tokenId: string) => {
+    if (!eventContract?.postNFT || !address) {
+      toast({
+        title: 'Error',
+        description: 'Please connect your wallet',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const tx = await eventContract.postNFT.likePost(tokenId);
+      await tx.wait();
+
+      await fetchPosts();
+      toast({
+        title: 'Success',
+        description: 'Post liked successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error('Error liking post:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to like post',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (eventContract?.postNFT) {
       fetchPosts();
@@ -143,6 +182,7 @@ export const useNFTPosts = () => {
     posts,
     loading,
     createPost,
-    fetchPosts
+    fetchPosts,
+    likePosts,
   };
 };

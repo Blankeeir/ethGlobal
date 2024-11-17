@@ -23,7 +23,11 @@ export const NFTCardGrid: React.FC<NFTCardGridProps> = ({
   onBuy,
 }) => {
   if (loading) {
-    return <ContentLoader count={6} height="400px" />;
+    return (
+      <Box height="400px">
+        <ContentLoader />
+      </Box>
+    );
   }
 
   return (

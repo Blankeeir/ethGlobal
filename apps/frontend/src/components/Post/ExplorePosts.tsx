@@ -1,7 +1,8 @@
-// apps/frontend/src/components/ExplorePosts/ExplorePosts.tsx
-import React, { useState, useEffect } from 'react';
+// src/components/Post/ExplorePosts.tsx
+import React, { useState } from 'react';
 import {
   VStack,
+  HStack,
   Box,
   SimpleGrid,
   Text,
@@ -17,234 +18,300 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Skeleton,
+  useToast,
 } from '@chakra-ui/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiFilter, FiTrendingUp } from 'react-icons/fi';
+import { FiSearch, FiFilter, FiTrendingUp, FiPlus } from 'react-icons/fi';
+import { useNFTPosts } from '../../hooks/useNFTPosts';
+import { usePush } from '../../contexts/PushContext';
+import { useWeb3 } from '../../contexts/Web3Context';
 import { PostNFTCard } from './PostNFTCard';
 import { CreatePostModal } from '../modals/CreatePostModal';
-import { useWeb3 } from '../../contexts/Web3Context';
-import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
+import { NFTDetails } from './NFTDetails';
+import {Post} from '../../util/types';
 
-interface Post {
-  id: string;
-  tokenId: string;
-  content: string;
-  imageUri: string;
-  author: string;
-  likes: number;
-  comments: number;
-  price?: string;
-  isBuddyOnly: boolean;
-  filecoinCID: string;
-  chainId: number;
-}
+type SortOption = 'recent' | 'trending' | 'price' | 'buddyOnly';
 
 export const ExplorePosts: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'recent' | 'trending' | 'price'>('recent');
-
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
+  const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null);
+  
+  const { 
+    posts, 
+    loading, 
+    createPost,
+    likePosts, 
+    fetchPosts 
+  } = useNFTPosts();
+  
+  const { sendNotification } = usePush();
+  const { address } = useWeb3();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { shouldRender, controls } = useAnimatedMount(true);
-  const { postContract, sendCrossChainMessage } = useWeb3();
-  const { storeData } = useFilecoin();
   const toast = useToast();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 
-  useEffect(() => {
-    fetchPosts();
-  }, [postContract]);
-
-  const fetchPosts = async () => {
-    if (!postContract) return;
-
+  const handleLike = async (tokenId: string, author: string) => {
     try {
-      setLoading(true);
-      const totalPosts = await postContract.getCurrentTokenId();
-      const fetchedPosts = await Promise.all(
-        Array.from({ length: totalPosts.toNumber() }, (_, i) => 
-          postContract.getPost(i + 1)
-        )
-      );
-
-      const formattedPosts = await Promise.all(
-        fetchedPosts.map(async (post) => {
-          // Fetch content from Filecoin
-          const content = await storeData.retrieveData(post.filecoinCID);
-          return {
-            id: post.tokenId.toString(),
-            tokenId: post.tokenId.toString(),
-            content: content.content,
-            imageUri: content.imageUri,
-            author: post.author,
-            likes: post.likes.toNumber(),
-            comments: post.commentCount.toNumber(),
-            price: post.price?.toString(),
-            isBuddyOnly: post.isBuddyOnly,
-            filecoinCID: post.filecoinCID,
-            chainId: post.chainId.toNumber(),
-          };
-        })
-      );
-
-      setPosts(formattedPosts);
-    } catch (error: any) {
-      toast.error('Failed to fetch posts', {
-        description: error.message
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLike = async (tokenId: string) => {
-    if (!postContract) return;
-
-    try {
-      const tx = await postContract.likePost(tokenId);
-      await tx.wait();
+      await likePosts(tokenId);
       
-      // Update posts state
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.tokenId === tokenId 
-            ? { ...post, likes: post.likes + 1 }
-            : post
-        )
+      // Send notification to post author
+      await sendNotification(
+        author,
+        'New Like',
+        `Someone liked your post!`,
+        `/posts/${tokenId}`
       );
 
-      toast.success('Post liked successfully');
-    } catch (error: any) {
-      toast.error('Failed to like post', {
-        description: error.message
+      toast({
+        title: 'Success',
+        description: 'Post liked successfully',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to like post',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
       });
     }
   };
 
-  const handleComment = async (post: Post, comment: string) => {
-    if (!postContract) return;
+  // const handleComment = async (tokenId: string, comment: string, author: string) => {
+  //   try {
+  //     await commentOnPost(tokenId, comment);
+      
+  //     // Send notification to post author
+  //     await sendNotification(
+  //       author,
+  //       'New Comment',
+  //       `Someone commented on your post: "${comment.slice(0, 50)}${comment.length > 50 ? '...' : ''}"`,
+  //       `/posts/${tokenId}`
+  //     );
 
+  //     toast({
+  //       title: 'Success',
+  //       description: 'Comment added successfully',
+  //       status: 'success',
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       title: 'Error',
+  //       description: error instanceof Error ? error.message : 'Failed to add comment',
+  //       status: 'error',
+  //       duration: 5000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
+
+  const handleShare = async (tokenId: string) => {
     try {
-      if (post.chainId !== postContract.chainId) {
-        // Cross-chain comment
-        await sendCrossChainMessage(
-          post.chainId,
-          ethers.utils.defaultAbiCoder.encode(
-            ['uint256', 'string'],
-            [post.tokenId, comment]
-          )
-        );
-      } else {
-        // Same chain comment
-        const tx = await postContract.addComment(post.tokenId, comment);
-        await tx.wait();
-      }
-
-      toast.success('Comment added successfully');
-      await fetchPosts();
-    } catch (error: any) {
-      toast.error('Failed to add comment', {
-        description: error.message
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/posts/${tokenId}`
+      );
+      toast({
+        title: 'Link Copied',
+        description: 'Post link copied to clipboard',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to copy link',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
       });
     }
   };
 
   const sortedAndFilteredPosts = posts
-    .filter(post => 
-      post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    .filter(post => {
+      const searchLower = searchQuery.toLowerCase();
+      return (
+        post.content.toLowerCase().includes(searchLower) ||
+        post.author.toLowerCase().includes(searchLower)
+      );
+    })
     .sort((a, b) => {
       switch (sortBy) {
         case 'trending':
           return (b.likes + b.comments) - (a.likes + a.comments);
         case 'price':
-          return parseFloat(b.price || '0') - parseFloat(a.price || '0');
+          return Number(b.price || '0') - Number(a.price || '0');
+        case 'buddyOnly':
+          return Number(b.isBuddyOnly) - Number(a.isBuddyOnly);
         default:
-          return parseInt(b.tokenId) - parseInt(a.tokenId);
+          return Number(b.tokenId) - Number(a.tokenId);
       }
     });
 
-  if (!shouldRender) return null;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   return (
-    <AnimatePresence>
-      <Box
-        as={motion.div}
-        initial="hidden"
-        animate={controls}
-        exit="exit"
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: -20 }
-        }}
-      >
-        <VStack spacing={6} w="full">
-          <HStack w="full" justify="space-between" p={4}>
-            <InputGroup size="md">
-              <Input
-                placeholder="Search posts..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+    <Box p={4}>
+      <VStack spacing={6} w="full">
+        {/* Search and Filter Bar */}
+        <HStack w="full" justify="space-between" p={4} bg={bgColor} rounded="lg" shadow="sm">
+          <InputGroup size="md" maxW="md">
+            <Input
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              borderColor={borderColor}
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label="Search"
+                icon={<FiSearch />}
+                variant="ghost"
+                size="sm"
               />
-              <InputRightElement>
-                <IconButton
-                  aria-label="Search"
-                  icon={<FiSearch />}
-                  variant="ghost"
-                />
-              </InputRightElement>
-            </InputGroup>
+            </InputRightElement>
+          </InputGroup>
 
-            <HStack spacing={4}>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  leftIcon={<FiFilter />}
-                  variant="outline"
-                >
-                  {sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}
-                </MenuButton>
-                <MenuList>
-                  <MenuItem onClick={() => setSortBy('recent')}>Most Recent</MenuItem>
-                  <MenuItem onClick={() => setSortBy('trending')}>Trending</MenuItem>
-                  <MenuItem onClick={() => setSortBy('price')}>Highest Price</MenuItem>
-                </MenuList>
-              </Menu>
+          <HStack spacing={4}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                leftIcon={<FiFilter />}
+                variant="outline"
+                size="md"
+              >
+                {sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}
+              </MenuButton>
+              <MenuList>
+                <MenuItem icon={<FiTrendingUp />} onClick={() => setSortBy('recent')}>
+                  Most Recent
+                </MenuItem>
+                <MenuItem icon={<FiTrendingUp />} onClick={() => setSortBy('trending')}>
+                  Trending
+                </MenuItem>
+                <MenuItem icon={<FiTrendingUp />} onClick={() => setSortBy('price')}>
+                  Highest Price
+                </MenuItem>
+                <MenuItem icon={<FiTrendingUp />} onClick={() => setSortBy('buddyOnly')}>
+                  Buddy Only
+                </MenuItem>
+              </MenuList>
+            </Menu>
 
-              <Button colorScheme="blue" onClick={onOpen}>
-                Create Post
-              </Button>
-            </HStack>
+            <Button
+              leftIcon={<FiPlus />}
+              colorScheme="blue"
+              onClick={onOpen}
+              isDisabled={!address}
+            >
+              Create Post
+            </Button>
           </HStack>
+        </HStack>
 
+        {/* Posts Grid */}
+        <Box w="full">
           {loading ? (
-            <Spinner size="xl" />
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+              {[...Array(6)].map((_, i) => (
+                <Skeleton key={i} height="400px" rounded="lg" />
+              ))}
+            </SimpleGrid>
+          ) : sortedAndFilteredPosts.length === 0 ? (
+            <VStack py={12} spacing={4}>
+              <Text fontSize="lg" color="gray.500">
+                No posts found
+              </Text>
+              <Button colorScheme="blue" onClick={onOpen}>
+                Create the first post
+              </Button>
+            </VStack>
           ) : (
             <SimpleGrid
+              as={motion.div}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
               columns={{ base: 1, md: 2, lg: 3 }}
               spacing={6}
-              w="full"
-              p={4}
             >
               {sortedAndFilteredPosts.map((post) => (
-                <PostNFTCard
+                <Box
+                  as={motion.div}
                   key={post.tokenId}
-                  post={post}
-                  onLike={() => handleLike(post.tokenId)}
-                  onComment={handleComment}
-                />
+                  variants={itemVariants}
+                  whileHover={{ y: -4 }}
+                >
+              <PostNFTCard
+                    post={{
+                      id: post.tokenId,
+                      // tokenId: post.tokenId,
+                      // content: post.content,
+                      // // imageUri: post.imageUri,
+                      // author: post.author,
+                      // likes: post.likes,
+                      // comments: post.comments,
+                      // price: post.price,
+                      // isBuddyOnly: post.isBuddyOnly,
+                      // // filecoinCID: post.filecoinCID,
+                      // chainId: post.chainId,
+                      // timestamp: post.createdAt || Date.now()
+                    }}
+                    // author=''
+                    likes={0}
+                    comments={0}
+                    price=''
+                    tokenId=''
+                    content=''
+                    imageUri=''
+                    onLike={() => handleLike(post.tokenId, post.author)}
+                    onShare={() => handleShare(post.tokenId)}
+                    onClick={() => setSelectedTokenId(post.tokenId)}
+                  />
+                </Box>
               ))}
             </SimpleGrid>
           )}
-        </VStack>
+        </Box>
+      </VStack>
 
-        <CreatePostModal isOpen={isOpen} onClose={onClose} onSuccess={fetchPosts} />
-      </Box>
-    </AnimatePresence>
+      {/* Modals */}
+      <CreatePostModal 
+        isOpen={isOpen} 
+        onClose={onClose}
+        onSuccess={fetchPosts}
+      />
+
+      {selectedTokenId && (
+        <NFTDetails
+          tokenId={selectedTokenId}
+          isOpen={!!selectedTokenId}
+          onClose={() => setSelectedTokenId(null)}
+        />
+      )}
+    </Box>
   );
 };

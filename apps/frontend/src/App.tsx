@@ -9,7 +9,7 @@ import { Footer } from './components/Footer';
 import { Home } from './Home';
 import { BuddyList } from './components/buddy/BuddyList';
 import { EventList } from './components/event/EventList.tsx';
-import { Profile } from './components/Profile/Profile';
+import { Profile } from './components/Profile/Profile.tsx';
 import { DynamicAuthProvider } from './components/Auth/DynamicAuthProvider';
 import { Web3Provider } from './contexts/Web3Context.tsx';
 import { PushProvider } from './contexts/PushContext.tsx';
@@ -42,9 +42,9 @@ const App: React.FC = () => {
                         <Box flex="1" as="main" bg="gray.50">
                           <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/list-buddies" element={<BuddyList />} />
+                            {/* <Route path="/list-buddies" element={<BuddyList />} />
                             <Route path="/list-events" element={<EventList selectedCategory="" onCategoryChange={() => {}} />} />
-                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/profile" element={<Profile />} /> */}
                           </Routes>
                         </Box>
                         <Footer />

@@ -23,9 +23,7 @@ function _define_property(obj, key, value) {
 }
 let HttpException = class HttpException extends Error {
     constructor(status, message){
-        super(message);
-        _define_property(this, "status", void 0);
-        _define_property(this, "message", void 0);
+        super(message), _define_property(this, "status", void 0), _define_property(this, "message", void 0);
         this.status = status;
         this.message = message;
     }

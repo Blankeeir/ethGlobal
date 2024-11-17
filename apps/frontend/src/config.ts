@@ -11,7 +11,11 @@ export const REACT_APP_HYPERLANE_CONFIG="0x3c2269811836af69497E5F486A85D7316753c
 export const LZ_ENDPOINTS="0x3c2269811836af69497E5F486A85D7316753cf62"
 export const LZ_CHAIN_IDS=""
 
-export const DYNAMIC_ENV_ID=""
+export const DYNAMIC_ENV_ID="7acebce4-9ec4-4363-a4f3-b85925f652a8"
+export const DYNAMIC_JWKS_ENDPOINT="https://app.dynamic.xyz/api/v0/sdk/7acebce4-9ec4-4363-a4f3-b85925f652a8/.well-known/jwks"
+export const DYNAMIC_TOKEN="dyn_7pYqcqmbo6lTICbO00hvaYyoQggAYqVAkVu7Wurcqo95pdAqma1Jb4Up"
+
+
 export const REACT_APP_INFURA_API_KEY=""
 
 export const appName="Buddy"

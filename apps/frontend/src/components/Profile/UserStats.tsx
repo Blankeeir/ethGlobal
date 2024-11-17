@@ -9,26 +9,32 @@ import {
   StatHelpText,
   Icon,
   useColorModeValue,
-  Skeleton
+  Skeleton,
+  chakra,
+  shouldForwardProp as chakraShouldForwardProp,
 } from '@chakra-ui/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useAnimatedMount } from '../../hooks/useAnimatedMount';
-import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
-import { FiUsers, FiHeart, FiFileText, FiMessageCircle } from 'react-icons/fi';
-import { useUserData } from '../../hooks/useUserData';
+import { isValidMotionProp } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { FiUsers, FiMessageCircle, FiFileText, FiHeart } from 'react-icons/fi';
+const MotionStat = chakra(motion.div, {
+  shouldForwardProp: (prop: string) => isValidMotionProp(prop) || chakraShouldForwardProp(prop),
+  baseStyle: {
+    ...Stat.defaultProps,
+  },
+});
 
-const MotionStat = motion(Stat);
 
 interface StatsCardProps {
   title: string;
   stat: number;
-  icon: React.ReactElement;
+  icon: React.ElementType;
   helpText?: string;
   isVisible: boolean;
 }
 
 const StatsCard: React.FC<StatsCardProps> = ({ title, stat, icon, helpText, isVisible }) => {
-  const { shouldRender, controls } = useAnimatedMount(isVisible);
+  const controls = useAnimation();
+  const shouldRender = isVisible;
   const animatedValue = useAnimatedCounter(stat, 2);
   
   if (!shouldRender) return null;
@@ -54,7 +60,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, stat, icon, helpText, isVi
     >
       <Box pl={{ base: 2, md: 4 }}>
         <StatLabel display="flex" alignItems="center" gap={2} fontWeight="medium">
-          <Icon as={icon.type} color="blue.500" />
+          <Icon as={icon} color="blue.500" />
           {title}
         </StatLabel>
         <StatNumber fontSize="3xl" fontWeight="medium">
@@ -78,25 +84,25 @@ export const UserStats: React.FC<{ userId?: string }> = ({ userId }) => {
     {
       title: "Today's Connections",
       stat: stats?.dateRange?.today || 0,
-      icon: <FiUsers />,
+      icon: FiUsers,
       helpText: "New connections made today"
     },
     {
       title: "Weekly Activity",
       stat: stats?.dateRange?.week || 0,
-      icon: <FiMessageCircle />,
+      icon: FiMessageCircle,
       helpText: "Active conversations this week"
     },
     {
       title: "Total Posts",
       stat: stats?.posts || 0,
-      icon: <FiFileText />,
+      icon: FiFileText,
       helpText: "Content shared"
     },
     {
       title: "Community Impact",
       stat: stats?.likes || 0,
-      icon: <FiHeart />,
+      icon: FiHeart,
       helpText: "Total likes received"
     }
   ];
@@ -129,3 +135,57 @@ export const UserStats: React.FC<{ userId?: string }> = ({ userId }) => {
     </Box>
   );
 };
+function useAnimatedCounter(stat: number, duration: number) {
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    let startTime: number;
+    const animateCount = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      setCount(Math.floor(progress * stat));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateCount);
+      }
+    };
+    
+    requestAnimationFrame(animateCount);
+  }, [stat, duration]);
+
+  return count;
+}
+
+function useUserData(userId: string | undefined) {
+  const [stats, setStats] = React.useState<{
+    dateRange?: { today: number; week: number };
+    posts?: number;
+    likes?: number;
+  } | null>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        // Simulated API call - replace with actual API call
+        const response = await fetch(`/api/users/${userId}/stats`);
+        const data = await response.json();
+        setStats(data);
+      } catch (error) {
+        console.error('Error fetching user stats:', error);
+        setStats(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  return { stats, loading };
+}

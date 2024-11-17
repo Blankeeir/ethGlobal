@@ -18,9 +18,9 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { FiSend, FiPaperclip } from 'react-icons/fi';
-import { useWeb3 } from '../../hooks/useWeb3';
+import { useWeb3 } from '../../contexts/Web3Context';
 import { useENS } from '../../hooks/useEns';
-import { usePushProtocol } from '../../hooks/usePushProtocol';
+import { usePush} from '../../contexts/PushContext';
 import { useFilecoinStorage } from '../../hooks/useFilecoinStorage';
 import { useLayerZero } from '../../hooks/useLayerZero';
 
@@ -42,10 +42,10 @@ export const ChatPage: React.FC = () => {
   const toast = useToast();
 
   const { address } = useWeb3();
-  const { resolveENSName, ensName } = useENS();
-  const { sendNotification } = usePushProtocol();
-  const { storeData } = useFilecoinStorage();
-  const { sendCrossChainMessage } = useLayerZero();
+  const { lookupAddress, ensName } = useENS();
+  const { sendNotification } = usePush();
+  const { uploadFile } = useFilecoinStorage();
+  const { sendMessage } = useLayerZero();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -53,7 +53,7 @@ export const ChatPage: React.FC = () => {
   useEffect(() => {
     if (buddyAddress) {
       loadMessages();
-      resolveENSName(buddyAddress);
+      lookupAddress(buddyAddress);
     }
   }, [buddyAddress]);
 
@@ -95,7 +95,7 @@ export const ChatPage: React.FC = () => {
       setLoading(true);
       
       // Store message content on Filecoin
-      const contentCID = await storeData({
+      const contentCID = await uploadFile({
         content: newMessage,
         timestamp: Date.now(),
         from: address,
@@ -103,11 +103,11 @@ export const ChatPage: React.FC = () => {
       });
 
       // Send cross-chain message using Layer Zero
-      await sendCrossChainMessage(buddyAddress, {
+      await sendMessage(parseInt(buddyAddress, 16), JSON.stringify({
         type: 'chat',
         content: newMessage,
         contentCID
-      });
+      }));
 
       // Send notification using Push Protocol
       await sendNotification(

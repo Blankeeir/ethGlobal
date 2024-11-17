@@ -2,11 +2,13 @@
 
 export interface Buddy {
   id: string;
+  ensName: string;
   name: string;
   avatar: string;
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
+  address: string;
 }
 
 export interface Event {
@@ -76,6 +78,36 @@ export interface UserProfile {
 
 }
 
+export interface NFTPostCard {
+
+    tokenId: string;
+  
+    content: string;
+  
+    imageUri: string;
+  
+    author: string;
+  
+    likes: number;
+  
+    comments: number;
+  
+    price?: string;
+  
+    isLiked?: boolean;
+  
+    onLike?: () => void;
+  
+    onComment?: (post: Post, comment: string) => Promise<void>;
+  
+    onShare?: () => void;
+  
+    onBuy?: () => void;
+  
+  }
+  
+
+
 export interface EventData {
   id: string;
   name: string;
@@ -88,3 +120,23 @@ export interface EventData {
   isPrivate: boolean;
 }
 
+
+
+export interface PushNotification {
+  id: string;
+  title: string;
+  message: string;
+  cta: string;
+  image: string;
+  timestamp: number;
+  source: string;
+  recipient: string;
+  status: string;
+}
+
+export interface PushChannel {
+  channelAddress: string;
+  name: string;
+  icon: string;
+  subscribers: number;
+}

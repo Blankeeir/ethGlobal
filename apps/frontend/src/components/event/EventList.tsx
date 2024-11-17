@@ -25,6 +25,7 @@ import { JoinEventModal } from '../modals/JoinEventModal';
 interface EventListProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
+  
 }
 
 export const EventList: React.FC<EventListProps> = ({
@@ -135,7 +136,14 @@ export const EventList: React.FC<EventListProps> = ({
         )}
       </VStack>
 
-      <JoinEventModal isOpen={isOpen} onClose={onClose} />
+      <JoinEventModal 
+        isOpen={isOpen} 
+        onClose={onClose}
+        onConfirm={() => {
+          onClose();
+          // Add event joining logic here if needed
+        }}
+      />
     </Box>
   );
 };

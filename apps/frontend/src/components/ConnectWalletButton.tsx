@@ -1,35 +1,43 @@
-import { Button, Fade, HStack, Text } from "@chakra-ui/react";
+// src/components/ConnectWalletButton.tsx
+
+import React, { useContext } from 'react';
+import { Button, Fade } from "@chakra-ui/react";
 import { FaWallet } from "react-icons/fa6";
-import { humanAddress } from "@repo/utils/FormattingUtils";
+import { humanAddress } from "@repo/utils/FormattingUtils"; // Ensure this utility function exists and works correctly
+import { DynamicAuthContext } from './Auth/DynamicAuthProvider'; // Correctly import the context
 
 export const ConnectWalletButton = () => {
-  const { account } = useWallet();
-  const { open } = useWalletModal();
+  const authContext = useContext(DynamicAuthContext); // Use the context object
 
-  if (!account)
-    return (
-      <Fade in={true}>
-        <Button
-          onClick={open}
-          colorScheme="primary"
-          size="md"
-          leftIcon={<FaWallet />}
-          data-testid="connect-wallet"
-        >
-          Wallet Connect
-        </Button>
-      </Fade>
-    );
+  if (!authContext) {
+    throw new Error("ConnectWalletButton must be used within a DynamicAuthProvider");
+  }
+
+  const { isAuthenticated, walletAddress, openWidget } = authContext;
+
+  const handleButtonClick = () => {
+    if (!isAuthenticated) {
+      openWidget();
+    } else {
+      // Optional: Implement actions for authenticated users, e.g., logout or open settings
+      // For example, you might want to allow users to disconnect their wallet
+    }
+  };
 
   return (
     <Fade in={true}>
       <Button
-        onClick={open}
-        rounded={"full"}
-        color="black"
+        onClick={handleButtonClick}
+        colorScheme={!isAuthenticated ? "primary" : "gray"}
         size="md"
-        bg="rgba(235, 236, 252, 1)"
+        leftIcon={!isAuthenticated ? <FaWallet /> : undefined}
+        data-testid="connect-wallet"
+        rounded={"full"}
+        bg={!isAuthenticated ? undefined : "rgba(235, 236, 252, 1)"}
+        color={!isAuthenticated ? undefined : "black"}
       >
+        {!isAuthenticated && "Wallet Connect"}
+        {isAuthenticated && walletAddress && humanAddress(walletAddress)}
       </Button>
     </Fade>
   );

@@ -1,5 +1,4 @@
 import { config as dotenvConfig } from 'dotenv';
-import { mnemonic } from '@vechain/sdk-core';
 import { ValidateEnv } from '@utils/validateEnv';
 
 dotenvConfig({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
@@ -13,8 +12,6 @@ export const { MAX_FILE_SIZE } = validatedEnv;
 export const { ADMIN_MNEMONIC, ADMIN_ADDRESS } = validatedEnv;
 export const { NETWORK_URL, NETWORK_TYPE } = validatedEnv;
 export const { REWARD_AMOUNT } = validatedEnv;
-
-export const ADMIN_PRIVATE_KEY = mnemonic.derivePrivateKey(ADMIN_MNEMONIC.split(' '));
 
 export const config = {
   vechain: {

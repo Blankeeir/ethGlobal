@@ -15,9 +15,6 @@ _export(exports, {
     ADMIN_MNEMONIC: function() {
         return ADMIN_MNEMONIC;
     },
-    ADMIN_PRIVATE_KEY: function() {
-        return ADMIN_PRIVATE_KEY;
-    },
     CREDENTIALS: function() {
         return CREDENTIALS;
     },
@@ -56,7 +53,6 @@ _export(exports, {
     }
 });
 const _dotenv = require("dotenv");
-const _sdkcore = require("@vechain/sdk-core");
 const _validateEnv = require("../utils/validateEnv");
 (0, _dotenv.config)({
     path: `.env.${process.env.NODE_ENV || 'development'}.local`
@@ -69,7 +65,6 @@ const { MAX_FILE_SIZE } = validatedEnv;
 const { ADMIN_MNEMONIC, ADMIN_ADDRESS } = validatedEnv;
 const { NETWORK_URL, NETWORK_TYPE } = validatedEnv;
 const { REWARD_AMOUNT } = validatedEnv;
-const ADMIN_PRIVATE_KEY = _sdkcore.mnemonic.derivePrivateKey(ADMIN_MNEMONIC.split(' '));
 const config = {
     vechain: {
         nodeUrl: NETWORK_URL

@@ -1,8 +1,9 @@
 // apps/frontend/src/components/Profile/ProfileSettings.tsx
 import React from 'react';
-import {LocalProfileData} from './Profile';
+import {Profile} from './Profile';
+import {UserProfile} from '../../util/types';
 interface ProfileSettingsProps {
-  profile: LocalProfileData
+  profile: UserProfile;
 }
 import {
   VStack,

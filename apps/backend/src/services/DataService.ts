@@ -2,26 +2,7 @@
 import { FilecoinService } from './filecoin.service';
 import { PushService } from './push.service';
 
-interface PostData {
-  id: string;
-  content: string;
-  imageURI?: string;
-  author: string;
-  timestamp: number;
-  category?: string;
-  contentCID?: string;
-}
 
-interface EventData {
-  id: string;
-  name: string;
-  description: string;
-  startTime: number;
-  endTime: number;
-  category: string;
-  requiresIdentity: boolean;
-  participants: string[];
-}
 
 export class DataService {
   private filecoinService: FilecoinService;
